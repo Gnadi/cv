@@ -69,7 +69,7 @@ export const RESUME_DATA = {
     "Microsoft SQL Server",
     "Mongo DB",
     "React/Next.js",
-    "Tennis ;)",
+    "Tennis",
   ],
   projects: [
     {
