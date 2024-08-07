@@ -86,5 +86,19 @@ export const RESUME_DATA = {
         href: "https://gnadlinger.me/",
       },
     },
+    {
+      title: "Blog",
+      techStack: [
+        "Side Project",
+        "Storyblok",
+        "Astro"
+      ],
+      description: "My personal Blog",
+      logo: ConsultlyLogo,
+      link: {
+        label: "blog.gnadlinger.me",
+        href: "https://blog.gnadlinger.me/",
+      },
+    },
   ]
 } as const;
