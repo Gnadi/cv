@@ -53,7 +53,7 @@ export const RESUME_DATA = {
       end: "now",
       description:
         "2018 - 2022: Developer as part of the Team VT, building private and business Banking features, especially features to interact with Advisor or Insurance. Project lead on business banking projects. \n \n" +
-        "2023 - 2024: Developer as part of the Team ZV, developing new payment transaction features and migrating from MBS to EBICS banking standard.",
+        "2023 - now: Developer as part of the Team ZV, developing new payment transaction features and migrating from MBS to EBICS banking standard.",
     }
   ],
   skills: [
