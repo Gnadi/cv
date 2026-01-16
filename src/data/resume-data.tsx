@@ -61,7 +61,7 @@ export const RESUME_DATA = {
       school: "WKO Oberösterreich",
       link: "https://www.wko.at/ooe",
       degree: {
-        en: "Engineer Degree",
+        en: "Engineering Degree",
         de: "Ingenieur Zertifizierung",
       },
       start: "2026",
