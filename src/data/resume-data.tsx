@@ -8,8 +8,8 @@ export const RESUME_DATA = {
   location: "Linz, Österreich",
   locationLink: "https://www.google.com/maps/place/Linz",
   about: {
-    en: "Full Stack Engineer focused on building robust maintainable products",
-    de: "Full Stack Engineer mit Fokus auf robuste und wartbare Produkte",
+    en: "Full Stack Engineer\nfocused on building robust maintainable products",
+    de: "Full Stack Engineer\nmit Fokus auf robuste und wartbare Produkte",
   },
   summary: {
     en: "As a Full Stack Engineer, I have taken multiple products from 0 to 1. My core expertise lies in Angular and Java, with deep experience developing private and business banking products at Raiffeisen Software GmbH.",
