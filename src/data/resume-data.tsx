@@ -1,15 +1,20 @@
 import { ConsultlyLogo, ParabolLogo } from "@/images/logos";
 import { GitHubIcon, LinkedInIcon } from "@/components/icons";
+import { WebsiteIcon } from "@/components/icons/WebsiteIcon";
 
 export const RESUME_DATA = {
-  name: "Johannes Gnadlinger",
+  name: "Ing. Johannes Gnadlinger",
   initials: "JG",
   location: "Linz, Österreich",
   locationLink: "https://www.google.com/maps/place/Linz",
-  about:
-    "Full Stack Engineer focused on building robust maintainable products",
-  summary:
-    "As a Full Stack Engineer, I have successfully taken multiple products from 0 to 1. Currently, I work mostly with Angular and Java. I have over 6 years of experience in working at Raiffeisen Software GmbH creating products in private and business banking.",
+  about: {
+    en: "Full Stack Engineer focused on building robust maintainable products",
+    de: "Full Stack Engineer mit Fokus auf robuste und wartbare Produkte",
+  },
+  summary: {
+    en: "As a Full Stack Engineer, I have taken multiple products from 0 to 1. My core expertise lies in Angular and Java, with deep experience developing private and business banking products at Raiffeisen Software GmbH.",
+    de: "Als Full Stack Engineer habe ich mehrere Produkte von 0 auf 1 gebracht. Meine Kernkompetenz liegt in Angular und Java, mit umfangreicher Erfahrung in der Entwicklung von Privat- und Firmenkundenbanking-Produkten bei der Raiffeisen Software GmbH.",
+  },
   avatarUrl: "https://avatars.githubusercontent.com/u/15075183?v=4",
   contact: {
     email: "johannes.gnadlinger1997@gmail.com",
@@ -24,22 +29,43 @@ export const RESUME_DATA = {
         url: "https://at.linkedin.com/in/johannes-gnadlinger-842293271",
         icon: LinkedInIcon,
       },
+      {
+        name: "Website",
+        url: "https://gnadlinger.me",
+        icon: WebsiteIcon,
+      },
     ],
   },
   education: [
     {
       school: "Gymnasium Dr.- Schauerstraße",
       link: "https://schauergym.at/",
-      degree: "Technical Education",
+      degree: {
+        en: "Technical Education",
+        de: "Technische Ausbildung",
+      },
       start: "2009",
       end: "2013",
     },
     {
       school: "HTL Leonding",
       link: "https://www.htl-leonding.at/",
-      degree: "System & Software Engineering",
+      degree: {
+        en: "System & Software Engineering",
+        de: "System & Software Engineering",
+      },
       start: "2013",
       end: "2017",
+    },
+    {
+      school: "WKO Oberösterreich",
+      link: "https://www.wko.at/ooe",
+      degree: {
+        en: "Engineer Degree",
+        de: "Ingenieur Zertifizierung",
+      },
+      start: "2026",
+      end: ""
     },
   ],
   work: [
@@ -50,11 +76,17 @@ export const RESUME_DATA = {
       title: "Full Stack Developer",
       logo: ParabolLogo,
       start: "2018",
-      end: "now",
-      description:
-        "2018 - 2022: Developer as part of the Team VT, building private and business Banking features, especially features to interact with Advisor or Insurance. Project lead on business banking projects. \n \n" +
-        "2023 - now: Developer as part of the Team ZV, developing new payment transaction features and migrating from MBS to EBICS banking standard.",
-    }
+      end: {
+        en: "now",
+        de: "heute",
+      },
+      description: {
+        en: "2018 - 2022: Developer as part of the Team VT, building private and business Banking features, especially features to interact with Advisor or Insurance. Project lead on business banking projects. \n \n" +
+          "2023 - now: Developer as part of the Team ZV, developing new payment transaction features and migrating from MBS to EBICS banking standard.",
+        de: "2018 - 2022: Entwickler im Team VT, Entwicklung von Privat- und Firmenkundenbanking-Features, insbesondere Features zur Interaktion mit Berater oder Versicherung. Projektleitung bei Firmenkundenprojekten. \n \n" +
+          "2023 - heute: Entwickler im Team ZV, Entwicklung neuer Zahlungsverkehrs-Features und Migration vom MBS- zum EBICS-Banking-Standard.",
+      },
+    },
   ],
   skills: [
     "Angular",
@@ -74,12 +106,11 @@ export const RESUME_DATA = {
   projects: [
     {
       title: "Homepage",
-      techStack: [
-        "Side Project",
-        "Astro",
-        "Vite",
-      ],
-      description: "My personal Website",
+      techStack: ["Side Project", "Astro", "Vite"],
+      description: {
+        en: "My personal Website",
+        de: "Meine persönliche Webseite",
+      },
       logo: ConsultlyLogo,
       link: {
         label: "gnadlinger.me",
@@ -88,17 +119,16 @@ export const RESUME_DATA = {
     },
     {
       title: "Blog",
-      techStack: [
-        "Side Project",
-        "Storyblok",
-        "Astro"
-      ],
-      description: "My personal Blog",
+      techStack: ["Side Project", "Storyblok", "Astro"],
+      description: {
+        en: "My personal Blog",
+        de: "Mein persönlicher Blog",
+      },
       logo: ConsultlyLogo,
       link: {
         label: "blog.gnadlinger.me",
         href: "https://blog.gnadlinger.me/",
       },
     },
-  ]
+  ],
 } as const;

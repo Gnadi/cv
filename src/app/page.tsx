@@ -1,20 +1,20 @@
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CommandMenu } from "@/components/command-menu";
-import { Metadata } from "next";
 import { Section } from "@/components/ui/section";
 import { GlobeIcon, MailIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RESUME_DATA } from "@/data/resume-data";
 import { ProjectCard } from "@/components/project-card";
-
-export const metadata: Metadata = {
-  title: `${RESUME_DATA.name} | ${RESUME_DATA.about}`,
-  description: RESUME_DATA.summary,
-};
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { useLanguage } from "@/contexts/language-context";
 
 export default function Page() {
+  const { t } = useLanguage();
+
   return (
     <main className="container relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16">
       <section className="mx-auto w-full max-w-2xl space-y-8 bg-white print:space-y-6">
@@ -22,7 +22,7 @@ export default function Page() {
           <div className="flex-1 space-y-1.5">
             <h1 className="text-2xl font-bold">{RESUME_DATA.name}</h1>
             <p className="max-w-md text-pretty font-mono text-sm text-muted-foreground">
-              {RESUME_DATA.about}
+              {t(RESUME_DATA.about)}
             </p>
             <p className="max-w-md items-center text-pretty font-mono text-xs text-muted-foreground">
               <a
@@ -62,6 +62,7 @@ export default function Page() {
                   </a>
                 </Button>
               ))}
+              <LanguageSwitcher />
             </div>
             <div className="hidden flex-col gap-x-1 font-mono text-sm text-muted-foreground print:flex">
               {RESUME_DATA.contact.email ? (
@@ -80,7 +81,7 @@ export default function Page() {
         <Section>
           <h2 className="text-xl font-bold">About</h2>
           <p className="text-pretty font-mono text-sm text-muted-foreground">
-            {RESUME_DATA.summary}
+            {t(RESUME_DATA.summary)}
           </p>
         </Section>
         <Section>
@@ -108,7 +109,7 @@ export default function Page() {
                       </span>
                     </h3>
                     <div className="text-sm tabular-nums text-gray-500">
-                      {work.start} - {work.end}
+                      {work.start}{work.end != null ? ` - ${typeof work.end === 'object' ? t(work.end) : work.end}` : ''}
                     </div>
                   </div>
 
@@ -117,7 +118,7 @@ export default function Page() {
                   </h4>
                 </CardHeader>
                 <CardContent className="mt-2 text-sm whitespace-pre-wrap">
-                  {work.description}
+                  {t(work.description)}
                 </CardContent>
               </Card>
             );
@@ -136,11 +137,12 @@ export default function Page() {
                       </a>
                     </h3>
                     <div className="text-sm tabular-nums text-gray-500">
-                      {education.start} - {education.end}
+                      {education.start}{education.end.length > 0 ? ` - ${education.end}` : ''}
+
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="mt-2">{education.degree}</CardContent>
+                <CardContent className="mt-2">{t(education.degree)}</CardContent>
               </Card>
             );
           })}
@@ -162,7 +164,7 @@ export default function Page() {
                 <ProjectCard
                   key={project.title}
                   title={project.title}
-                  description={project.description}
+                  description={t(project.description)}
                   tags={project.techStack}
                   link={"link" in project ? project.link.href : undefined}
                 />
