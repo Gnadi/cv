@@ -130,5 +130,31 @@ export const RESUME_DATA = {
         href: "https://blog.gnadlinger.me/",
       },
     },
+    {
+      title: "Kaydo",
+      techStack: ["Side Project", "React", "Vite"],
+      description: {
+        en: "A private social media platform",
+        de: "Eine private Social-Media-Plattform",
+      },
+      logo: ConsultlyLogo,
+      link: {
+        label: "kaydo.app",
+        href: "https://kaydo.app",
+      },
+    },
+    {
+      title: "Flexpoll",
+      techStack: ["Side Project", "React", "Vite"],
+      description: {
+        en: "A polling platform with multiple poll types including location and live polls",
+        de: "Eine Abstimmungsplattform mit verschiedenen Umfragetypen wie Standort- und Live-Abstimmungen",
+      },
+      logo: ConsultlyLogo,
+      link: {
+        label: "flexpoll.app",
+        href: "https://flexpoll.app",
+      },
+    },
   ],
 } as const;
