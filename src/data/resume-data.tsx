@@ -101,7 +101,13 @@ export const RESUME_DATA = {
     "Microsoft SQL Server",
     "Mongo DB",
     "React/Next.js",
-    "Tennis",
+  ],
+  aiSkills: [
+    "Claude Code",
+    "GitHub Copilot",
+    "Google Antigravity",
+    "Google Stitch",
+    "Google Pomelli",
   ],
   projects: [
     {

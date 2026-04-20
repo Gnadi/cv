@@ -155,6 +155,14 @@ export default function Page() {
             })}
           </div>
         </Section>
+        <Section>
+          <h2 className="text-xl font-bold">AI Skills</h2>
+          <div className="flex flex-wrap gap-1">
+            {RESUME_DATA.aiSkills.map((skill) => {
+              return <Badge key={skill}>{skill}</Badge>;
+            })}
+          </div>
+        </Section>
 
         <Section className="print-force-new-page scroll-mb-16 print:hidden">
           <h2 className="text-xl font-bold">Projects</h2>
