@@ -16,9 +16,11 @@ import { CommandIcon } from "lucide-react";
 
 interface Props {
   links: { url: string; title: string }[];
+  onOpenContact?: () => void;
+  onOpenShare?: () => void;
 }
 
-export const CommandMenu = ({ links }: Props) => {
+export const CommandMenu = ({ links, onOpenContact, onOpenShare }: Props) => {
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -64,6 +66,26 @@ export const CommandMenu = ({ links }: Props) => {
             >
               <span>Print</span>
             </CommandItem>
+            {onOpenContact && (
+              <CommandItem
+                onSelect={() => {
+                  setOpen(false);
+                  onOpenContact();
+                }}
+              >
+                <span>Kontakt aufnehmen</span>
+              </CommandItem>
+            )}
+            {onOpenShare && (
+              <CommandItem
+                onSelect={() => {
+                  setOpen(false);
+                  onOpenShare();
+                }}
+              >
+                <span>CV teilen</span>
+              </CommandItem>
+            )}
           </CommandGroup>
           <CommandGroup heading="Links">
             {links.map(({ url, title }) => (
