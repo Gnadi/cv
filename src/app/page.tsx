@@ -1,19 +1,24 @@
 "use client";
 
+import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CommandMenu } from "@/components/command-menu";
 import { Section } from "@/components/ui/section";
-import { GlobeIcon, MailIcon } from "lucide-react";
+import { CreditCardIcon, GlobeIcon, MailIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RESUME_DATA } from "@/data/resume-data";
 import { ProjectCard } from "@/components/project-card";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { useLanguage } from "@/contexts/language-context";
+import { ContactForm } from "@/components/contact-form";
+import { QrShare } from "@/components/qr-share";
 
 export default function Page() {
   const { t } = useLanguage();
+  const [contactOpen, setContactOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
 
   return (
     <main className="container relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16">
@@ -62,6 +67,19 @@ export default function Page() {
                   </a>
                 </Button>
               ))}
+              <ContactForm open={contactOpen} onOpenChange={setContactOpen} />
+              <QrShare open={shareOpen} onOpenChange={setShareOpen} />
+              <Button
+                className="size-8"
+                variant="outline"
+                size="icon"
+                aria-label="digital business card"
+                asChild
+              >
+                <a href="/card">
+                  <CreditCardIcon className="size-4" />
+                </a>
+              </Button>
               <LanguageSwitcher />
             </div>
             <div className="hidden flex-col gap-x-1 font-mono text-sm text-muted-foreground print:flex">
@@ -189,6 +207,8 @@ export default function Page() {
             title: socialMediaLink.name,
           })),
         ]}
+        onOpenContact={() => setContactOpen(true)}
+        onOpenShare={() => setShareOpen(true)}
       />
     </main>
   );
