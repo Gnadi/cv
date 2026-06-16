@@ -8,7 +8,7 @@ import { LanguageProvider } from "@/contexts/language-context";
 
 export const metadata: Metadata = {
   title: "Johannes Gnadlinger | Payments Engineer & former Product Owner",
-  description: "CV of Johannes Gnadlinger — Payments Engineer and former Product Owner in banking payments (EBICS/SEPA) at Raiffeisen Software, Linz. Focused on regulated financial infrastructure, with AI-assisted products as side projects.",
+  description: "CV of Johannes Gnadlinger — Payments Engineer and former Product Owner in banking payments (EBICS/SEPA) at Raiffeisen Software, Linz. Regulated financial infrastructure and AI-assisted product development.",
 };
 
 // If loading a variable font, you don't need to specify the font weight

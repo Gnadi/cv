@@ -8,8 +8,8 @@ export const RESUME_DATA = {
   location: "Linz, Österreich",
   locationLink: "https://www.google.com/maps/place/Linz",
   about: {
-    en: "Payments Engineer, previously Product Owner\nbuilding regulated financial infrastructure — EBICS, SEPA — with AI-assisted products as side projects",
-    de: "Payments Engineer, zuvor Product Owner\nAufbau regulierter Finanzinfrastruktur — EBICS, SEPA — mit KI-gestützten Produkten als Nebenprojekte",
+    en: "Payments Engineer, previously Product Owner\nbuilding regulated financial infrastructure — EBICS, SEPA, AI-assisted products",
+    de: "Payments Engineer, zuvor Product Owner\nAufbau regulierter Finanzinfrastruktur — EBICS, SEPA, KI-gestützte Produkte",
   },
   summary: {
     en: "As a Payments Engineer and former Product Owner at Raiffeisen Software GmbH, I've taken multiple banking products from 0 to 1. I led a team in corporate banking building communication tools between advisors and corporate customers, worked on payment and financial services (EBICS/SEPA), and earlier built advisor-customer communication features in private banking — all backed by deep expertise in Angular and Java.",
