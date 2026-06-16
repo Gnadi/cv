@@ -21,6 +21,44 @@ interface Props {
 
 const PDF_MARGIN_PT = 28;
 
+function isRowBlank(
+  data: Uint8ClampedArray,
+  width: number,
+  y: number,
+  threshold = 248,
+): boolean {
+  const rowStart = y * width * 4;
+  for (let x = 0; x < width; x += 4) {
+    const idx = rowStart + x * 4;
+    if (data[idx] < threshold || data[idx + 1] < threshold || data[idx + 2] < threshold) {
+      return false;
+    }
+  }
+  return true;
+}
+
+// Avoid slicing through content (e.g. mid-badge) by snapping a page break to
+// the nearest blank row near the ideal cut point.
+function findPageBreak(
+  data: Uint8ClampedArray,
+  width: number,
+  height: number,
+  idealY: number,
+  searchWindowPx: number,
+): number {
+  for (let offset = 0; offset <= searchWindowPx; offset++) {
+    const down = idealY - offset;
+    if (down > 0 && isRowBlank(data, width, down)) {
+      return down;
+    }
+    const up = idealY + offset;
+    if (up < height && isRowBlank(data, width, up)) {
+      return up;
+    }
+  }
+  return idealY;
+}
+
 async function downloadResumeAsPdf() {
   const element = document.getElementById("resume-content");
   if (!element) return;
@@ -33,7 +71,11 @@ async function downloadResumeAsPdf() {
   const canvas = await html2canvas(element, {
     scale: 2,
     backgroundColor: "#ffffff",
+    useCORS: true,
   });
+
+  const sourceCtx = canvas.getContext("2d");
+  const imageData = sourceCtx?.getImageData(0, 0, canvas.width, canvas.height).data;
 
   const pdf = new jsPDF("p", "pt", "a4");
   const pageWidth = pdf.internal.pageSize.getWidth();
@@ -44,6 +86,7 @@ async function downloadResumeAsPdf() {
   // canvas pixels per pt, derived from how wide the image is once scaled to fit contentWidth
   const pxPerPt = canvas.width / contentWidth;
   const pageHeightPx = Math.floor(contentHeight * pxPerPt);
+  const breakSearchWindowPx = Math.floor(pageHeightPx * 0.2);
 
   const pageCanvas = document.createElement("canvas");
   pageCanvas.width = canvas.width;
@@ -54,7 +97,20 @@ async function downloadResumeAsPdf() {
   let isFirstPage = true;
 
   while (renderedPx < canvas.height) {
-    const sliceHeightPx = Math.min(pageHeightPx, canvas.height - renderedPx);
+    const idealEndPx = renderedPx + pageHeightPx;
+    const isLastPage = idealEndPx >= canvas.height;
+    const endPx =
+      !isLastPage && imageData
+        ? findPageBreak(
+            imageData,
+            canvas.width,
+            canvas.height,
+            idealEndPx,
+            breakSearchWindowPx,
+          )
+        : Math.min(idealEndPx, canvas.height);
+    const sliceHeightPx = Math.max(endPx - renderedPx, 1);
+
     pageCanvas.height = sliceHeightPx;
     pageCtx.fillStyle = "#ffffff";
     pageCtx.fillRect(0, 0, pageCanvas.width, sliceHeightPx);
