@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { RESUME_DATA } from "@/data/resume-data";
 import { ProjectCard } from "@/components/project-card";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { PrintButton } from "@/components/print-button";
 import { useLanguage } from "@/contexts/language-context";
 
 export default function Page() {
@@ -62,6 +63,7 @@ export default function Page() {
                   </a>
                 </Button>
               ))}
+              <PrintButton />
               <LanguageSwitcher />
             </div>
             <div className="hidden flex-col gap-x-1 font-mono text-sm text-muted-foreground print:flex">
