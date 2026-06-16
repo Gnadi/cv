@@ -7,8 +7,8 @@ import React from "react";
 import { LanguageProvider } from "@/contexts/language-context";
 
 export const metadata: Metadata = {
-  title: "Johannes Gnadlinger | Fullstack Developer",
-  description: "Portfolio and Resume of Johannes Gnadlinger, a passionate Fullstack Developer specializing in building scalable web applications and engaging user experiences.",
+  title: "Johannes Gnadlinger | Product Owner & Payments Engineer",
+  description: "CV of Johannes Gnadlinger — Product Owner & Engineer in banking payments (EBICS/SEPA) at Raiffeisen Software, Linz. Regulated financial infrastructure and AI-assisted product development.",
 };
 
 // If loading a variable font, you don't need to specify the font weight
