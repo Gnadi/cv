@@ -12,11 +12,15 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Button } from "./ui/button";
-import { CommandIcon } from "lucide-react";
+import { CommandIcon, Download, Printer } from "lucide-react";
 import { RESUME_DATA } from "@/data/resume-data";
 
 interface Props {
-  links: { url: string; title: string }[];
+  links: {
+    url: string;
+    title: string;
+    icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  }[];
 }
 
 const PDF_MARGIN_PT = 28;
@@ -126,13 +130,13 @@ async function downloadResumeAsPdf() {
       sliceHeightPx,
     );
 
-    const sliceImgData = pageCanvas.toDataURL("image/jpeg", 0.92);
+    const sliceImgData = pageCanvas.toDataURL("image/png");
     const sliceHeightPt = sliceHeightPx / pxPerPt;
 
     if (!isFirstPage) pdf.addPage();
     pdf.addImage(
       sliceImgData,
-      "JPEG",
+      "PNG",
       PDF_MARGIN_PT,
       PDF_MARGIN_PT,
       contentWidth,
@@ -191,6 +195,7 @@ export const CommandMenu = ({ links }: Props) => {
                 window.print();
               }}
             >
+              <Printer />
               <span>Print</span>
             </CommandItem>
             <CommandItem
@@ -199,11 +204,12 @@ export const CommandMenu = ({ links }: Props) => {
                 void downloadResumeAsPdf();
               }}
             >
+              <Download />
               <span>Download PDF</span>
             </CommandItem>
           </CommandGroup>
           <CommandGroup heading="Links">
-            {links.map(({ url, title }) => (
+            {links.map(({ url, title, icon: Icon }) => (
               <CommandItem
                 key={url}
                 onSelect={() => {
@@ -211,6 +217,7 @@ export const CommandMenu = ({ links }: Props) => {
                   window.open(url, "_blank");
                 }}
               >
+                {Icon && <Icon />}
                 <span>{title}</span>
               </CommandItem>
             ))}
