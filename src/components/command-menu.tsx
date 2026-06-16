@@ -12,7 +12,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Button } from "./ui/button";
-import { CommandIcon, Printer } from "lucide-react";
+import { CommandIcon, Download, Printer } from "lucide-react";
 
 interface Props {
   links: {
@@ -61,6 +61,17 @@ export const CommandMenu = ({ links }: Props) => {
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Actions">
             <CommandItem
+              aria-label="Download CV as PDF"
+              onSelect={() => {
+                setOpen(false);
+                window.print();
+              }}
+            >
+              <Download />
+              <span>Download PDF</span>
+            </CommandItem>
+            <CommandItem
+              aria-label="Print CV"
               onSelect={() => {
                 setOpen(false);
                 window.print();

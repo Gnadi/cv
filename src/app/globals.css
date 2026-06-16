@@ -78,3 +78,21 @@
 .print-force-new-page {
   page-break-before: always;
 }
+
+@media print {
+  /* Set a tight, consistent page margin so the CV fits on a single page */
+  @page {
+    size: A4;
+    margin: 1.2cm;
+  }
+
+  /* Never force the (hidden) projects section onto a second page */
+  .print-force-new-page {
+    page-break-before: auto;
+  }
+
+  /* Keep work/education cards from splitting across pages */
+  section > div {
+    break-inside: avoid;
+  }
+}
