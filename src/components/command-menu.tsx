@@ -12,10 +12,14 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Button } from "./ui/button";
-import { CommandIcon } from "lucide-react";
+import { CommandIcon, Printer } from "lucide-react";
 
 interface Props {
-  links: { url: string; title: string }[];
+  links: {
+    url: string;
+    title: string;
+    icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  }[];
 }
 
 export const CommandMenu = ({ links }: Props) => {
@@ -62,11 +66,12 @@ export const CommandMenu = ({ links }: Props) => {
                 window.print();
               }}
             >
+              <Printer />
               <span>Print</span>
             </CommandItem>
           </CommandGroup>
           <CommandGroup heading="Links">
-            {links.map(({ url, title }) => (
+            {links.map(({ url, title, icon: Icon }) => (
               <CommandItem
                 key={url}
                 onSelect={() => {
@@ -74,6 +79,7 @@ export const CommandMenu = ({ links }: Props) => {
                   window.open(url, "_blank");
                 }}
               >
+                {Icon && <Icon />}
                 <span>{title}</span>
               </CommandItem>
             ))}

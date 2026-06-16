@@ -187,6 +187,7 @@ export default function Page() {
           ...RESUME_DATA.contact.social.map((socialMediaLink) => ({
             url: socialMediaLink.url,
             title: socialMediaLink.name,
+            icon: socialMediaLink.icon,
           })),
         ]}
       />
