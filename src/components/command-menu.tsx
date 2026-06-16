@@ -19,6 +19,8 @@ interface Props {
   links: { url: string; title: string }[];
 }
 
+const PDF_MARGIN_PT = 28;
+
 async function downloadResumeAsPdf() {
   const element = document.getElementById("resume-content");
   if (!element) return;
@@ -32,25 +34,57 @@ async function downloadResumeAsPdf() {
     scale: 2,
     backgroundColor: "#ffffff",
   });
-  const imgData = canvas.toDataURL("image/jpeg", 0.92);
 
   const pdf = new jsPDF("p", "pt", "a4");
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
-  const imgWidth = pageWidth;
-  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  const contentWidth = pageWidth - PDF_MARGIN_PT * 2;
+  const contentHeight = pageHeight - PDF_MARGIN_PT * 2;
 
-  let heightLeft = imgHeight;
-  let position = 0;
+  // canvas pixels per pt, derived from how wide the image is once scaled to fit contentWidth
+  const pxPerPt = canvas.width / contentWidth;
+  const pageHeightPx = Math.floor(contentHeight * pxPerPt);
 
-  pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-  heightLeft -= pageHeight;
+  const pageCanvas = document.createElement("canvas");
+  pageCanvas.width = canvas.width;
+  const pageCtx = pageCanvas.getContext("2d");
+  if (!pageCtx) return;
 
-  while (heightLeft > 0) {
-    position = heightLeft - imgHeight;
-    pdf.addPage();
-    pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
+  let renderedPx = 0;
+  let isFirstPage = true;
+
+  while (renderedPx < canvas.height) {
+    const sliceHeightPx = Math.min(pageHeightPx, canvas.height - renderedPx);
+    pageCanvas.height = sliceHeightPx;
+    pageCtx.fillStyle = "#ffffff";
+    pageCtx.fillRect(0, 0, pageCanvas.width, sliceHeightPx);
+    pageCtx.drawImage(
+      canvas,
+      0,
+      renderedPx,
+      canvas.width,
+      sliceHeightPx,
+      0,
+      0,
+      canvas.width,
+      sliceHeightPx,
+    );
+
+    const sliceImgData = pageCanvas.toDataURL("image/jpeg", 0.92);
+    const sliceHeightPt = sliceHeightPx / pxPerPt;
+
+    if (!isFirstPage) pdf.addPage();
+    pdf.addImage(
+      sliceImgData,
+      "JPEG",
+      PDF_MARGIN_PT,
+      PDF_MARGIN_PT,
+      contentWidth,
+      sliceHeightPt,
+    );
+
+    renderedPx += sliceHeightPx;
+    isFirstPage = false;
   }
 
   const fileName = `${RESUME_DATA.name.replace(/[^a-zA-Z0-9]+/g, "-")}-resume.pdf`;
