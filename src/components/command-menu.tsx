@@ -12,8 +12,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Button } from "./ui/button";
-import { CommandIcon, Download, Printer } from "lucide-react";
-import { RESUME_DATA } from "@/data/resume-data";
+import { CommandIcon, Printer } from "lucide-react";
 
 interface Props {
   links: {
@@ -21,134 +20,6 @@ interface Props {
     title: string;
     icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   }[];
-}
-
-const PDF_MARGIN_PT = 28;
-
-function isRowBlank(
-  data: Uint8ClampedArray,
-  width: number,
-  y: number,
-  threshold = 248,
-): boolean {
-  const rowStart = y * width * 4;
-  for (let x = 0; x < width; x += 4) {
-    const idx = rowStart + x * 4;
-    if (data[idx] < threshold || data[idx + 1] < threshold || data[idx + 2] < threshold) {
-      return false;
-    }
-  }
-  return true;
-}
-
-// Avoid slicing through content (e.g. mid-badge) by snapping a page break to
-// the nearest blank row near the ideal cut point.
-function findPageBreak(
-  data: Uint8ClampedArray,
-  width: number,
-  height: number,
-  idealY: number,
-  searchWindowPx: number,
-): number {
-  for (let offset = 0; offset <= searchWindowPx; offset++) {
-    const down = idealY - offset;
-    if (down > 0 && isRowBlank(data, width, down)) {
-      return down;
-    }
-    const up = idealY + offset;
-    if (up < height && isRowBlank(data, width, up)) {
-      return up;
-    }
-  }
-  return idealY;
-}
-
-async function downloadResumeAsPdf() {
-  const element = document.getElementById("resume-content");
-  if (!element) return;
-
-  const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
-    import("html2canvas"),
-    import("jspdf"),
-  ]);
-
-  const canvas = await html2canvas(element, {
-    scale: 2,
-    backgroundColor: "#ffffff",
-    useCORS: true,
-  });
-
-  const sourceCtx = canvas.getContext("2d");
-  const imageData = sourceCtx?.getImageData(0, 0, canvas.width, canvas.height).data;
-
-  const pdf = new jsPDF("p", "pt", "a4");
-  const pageWidth = pdf.internal.pageSize.getWidth();
-  const pageHeight = pdf.internal.pageSize.getHeight();
-  const contentWidth = pageWidth - PDF_MARGIN_PT * 2;
-  const contentHeight = pageHeight - PDF_MARGIN_PT * 2;
-
-  // canvas pixels per pt, derived from how wide the image is once scaled to fit contentWidth
-  const pxPerPt = canvas.width / contentWidth;
-  const pageHeightPx = Math.floor(contentHeight * pxPerPt);
-  const breakSearchWindowPx = Math.floor(pageHeightPx * 0.2);
-
-  const pageCanvas = document.createElement("canvas");
-  pageCanvas.width = canvas.width;
-  const pageCtx = pageCanvas.getContext("2d");
-  if (!pageCtx) return;
-
-  let renderedPx = 0;
-  let isFirstPage = true;
-
-  while (renderedPx < canvas.height) {
-    const idealEndPx = renderedPx + pageHeightPx;
-    const isLastPage = idealEndPx >= canvas.height;
-    const endPx =
-      !isLastPage && imageData
-        ? findPageBreak(
-            imageData,
-            canvas.width,
-            canvas.height,
-            idealEndPx,
-            breakSearchWindowPx,
-          )
-        : Math.min(idealEndPx, canvas.height);
-    const sliceHeightPx = Math.max(endPx - renderedPx, 1);
-
-    pageCanvas.height = sliceHeightPx;
-    pageCtx.fillStyle = "#ffffff";
-    pageCtx.fillRect(0, 0, pageCanvas.width, sliceHeightPx);
-    pageCtx.drawImage(
-      canvas,
-      0,
-      renderedPx,
-      canvas.width,
-      sliceHeightPx,
-      0,
-      0,
-      canvas.width,
-      sliceHeightPx,
-    );
-
-    const sliceImgData = pageCanvas.toDataURL("image/png");
-    const sliceHeightPt = sliceHeightPx / pxPerPt;
-
-    if (!isFirstPage) pdf.addPage();
-    pdf.addImage(
-      sliceImgData,
-      "PNG",
-      PDF_MARGIN_PT,
-      PDF_MARGIN_PT,
-      contentWidth,
-      sliceHeightPt,
-    );
-
-    renderedPx += sliceHeightPx;
-    isFirstPage = false;
-  }
-
-  const fileName = `${RESUME_DATA.name.replace(/[^a-zA-Z0-9]+/g, "-")}-resume.pdf`;
-  pdf.save(fileName);
 }
 
 export const CommandMenu = ({ links }: Props) => {
@@ -197,15 +68,6 @@ export const CommandMenu = ({ links }: Props) => {
             >
               <Printer />
               <span>Print</span>
-            </CommandItem>
-            <CommandItem
-              onSelect={() => {
-                setOpen(false);
-                void downloadResumeAsPdf();
-              }}
-            >
-              <Download />
-              <span>Download PDF</span>
             </CommandItem>
           </CommandGroup>
           <CommandGroup heading="Links">
