@@ -13,9 +13,48 @@ import {
 } from "@/components/ui/command";
 import { Button } from "./ui/button";
 import { CommandIcon } from "lucide-react";
+import { RESUME_DATA } from "@/data/resume-data";
 
 interface Props {
   links: { url: string; title: string }[];
+}
+
+async function downloadResumeAsPdf() {
+  const element = document.getElementById("resume-content");
+  if (!element) return;
+
+  const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+    import("html2canvas"),
+    import("jspdf"),
+  ]);
+
+  const canvas = await html2canvas(element, {
+    scale: 2,
+    backgroundColor: "#ffffff",
+  });
+  const imgData = canvas.toDataURL("image/jpeg", 0.92);
+
+  const pdf = new jsPDF("p", "pt", "a4");
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+  const imgWidth = pageWidth;
+  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+  let heightLeft = imgHeight;
+  let position = 0;
+
+  pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
+  heightLeft -= pageHeight;
+
+  while (heightLeft > 0) {
+    position = heightLeft - imgHeight;
+    pdf.addPage();
+    pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+  }
+
+  const fileName = `${RESUME_DATA.name.replace(/[^a-zA-Z0-9]+/g, "-")}-resume.pdf`;
+  pdf.save(fileName);
 }
 
 export const CommandMenu = ({ links }: Props) => {
@@ -63,6 +102,14 @@ export const CommandMenu = ({ links }: Props) => {
               }}
             >
               <span>Print</span>
+            </CommandItem>
+            <CommandItem
+              onSelect={() => {
+                setOpen(false);
+                void downloadResumeAsPdf();
+              }}
+            >
+              <span>Download PDF</span>
             </CommandItem>
           </CommandGroup>
           <CommandGroup heading="Links">
