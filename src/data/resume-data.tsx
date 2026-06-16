@@ -9,11 +9,11 @@ export const RESUME_DATA = {
   locationLink: "https://www.google.com/maps/place/Linz",
   about: {
     en: "Product Owner & Engineer in banking payments — EBICS/SEPA, regulated financial infrastructure, building AI-assisted products as side projects",
-    de: "Full Stack Engineer\nmit Fokus auf robuste und wartbare Produkte",
+    de: "Product Owner & Engineer im Zahlungsverkehr — EBICS/SEPA, regulierte Finanzinfrastruktur, Aufbau von KI-gestützten Produkten als Nebenprojekte",
   },
   summary: {
-    en: "As a Full Stack Engineer, I have taken multiple products from 0 to 1. My core expertise lies in Angular and Java, with deep experience developing private and business banking products at Raiffeisen Software GmbH.",
-    de: "Als Full Stack Engineer habe ich mehrere Produkte von 0 auf 1 gebracht. Meine Kernkompetenz liegt in Angular und Java, mit umfangreicher Erfahrung in der Entwicklung von Privat- und Firmenkundenbanking-Produkten bei der Raiffeisen Software GmbH.",
+    en: "As a Full Stack Engineer and Product Owner at Raiffeisen Software GmbH, I've taken multiple banking products from 0 to 1. I led a team in corporate banking building communication tools between advisors and corporate customers, worked on payment and financial services (EBICS/SEPA), and earlier built advisor-customer communication features in private banking — all backed by deep expertise in Angular and Java.",
+    de: "Als Full Stack Engineer und Product Owner bei der Raiffeisen Software GmbH habe ich mehrere Banking-Produkte von 0 auf 1 gebracht. Ich habe ein Team im Firmenkundenbanking geleitet, das Kommunikationstools zwischen Beratern und Firmenkunden entwickelt hat, im Zahlungsverkehr und Finanzdienstleistungsbereich (EBICS/SEPA) gearbeitet und zuvor im Privatkundenbanking Kommunikationsfunktionen zwischen Kunden und Beratern entwickelt — mit fundierter Expertise in Angular und Java.",
   },
   avatarUrl: "https://avatars.githubusercontent.com/u/15075183?v=4",
   contact: {
@@ -73,7 +73,7 @@ export const RESUME_DATA = {
       company: "Raiffeisen Software GmbH",
       link: "https://r-software.at",
       badges: ["Linz"],
-      title: "Full Stack Developer",
+      title: "Full Stack Developer & Product Owner",
       logo: ParabolLogo,
       start: "2018",
       end: {
@@ -81,10 +81,10 @@ export const RESUME_DATA = {
         de: "heute",
       },
       description: {
-        en: "2018 - 2022: Developer as part of the Team VT, building private and business Banking features, especially features to interact with Advisor or Insurance. Project lead on business banking projects. \n \n" +
-          "2023 - now: Developer as part of the Team ZV, developing new payment transaction features and migrating from MBS to EBICS banking standard.",
-        de: "2018 - 2022: Entwickler im Team VT, Entwicklung von Privat- und Firmenkundenbanking-Features, insbesondere Features zur Interaktion mit Berater oder Versicherung. Projektleitung bei Firmenkundenprojekten. \n \n" +
-          "2023 - heute: Entwickler im Team ZV, Entwicklung neuer Zahlungsverkehrs-Features und Migration vom MBS- zum EBICS-Banking-Standard.",
+        en: "2018 - 2022: Developer in Team VT, building private banking communication features between customers and their advisors, and corporate banking features for advisor and insurance interaction. Also served as Product Owner, leading a team in corporate banking that built communication tools between advisors and corporate customers. \n \n" +
+          "2023 - now: Developer in Team ZV, working on payment and financial services in corporate banking — developing new payment transaction features and migrating from MBS to the EBICS banking standard.",
+        de: "2018 - 2022: Entwickler im Team VT, Entwicklung von Kommunikationsfunktionen im Privatkundenbanking zwischen Kunden und ihren Beratern sowie Firmenkundenbanking-Features zur Interaktion mit Beratern und Versicherungen. Zusätzlich als Product Owner tätig mit Leitung eines Teams im Firmenkundenbanking, das Kommunikationstools zwischen Beratern und Firmenkunden entwickelt hat. \n \n" +
+          "2023 - heute: Entwickler im Team ZV, Tätigkeit im Zahlungsverkehr und Finanzdienstleistungsbereich im Firmenkundenbanking — Entwicklung neuer Zahlungsverkehrs-Features und Migration vom MBS- zum EBICS-Banking-Standard.",
       },
     },
   ],
