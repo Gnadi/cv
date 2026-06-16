@@ -8,7 +8,7 @@ export const RESUME_DATA = {
   location: "Linz, Österreich",
   locationLink: "https://www.google.com/maps/place/Linz",
   about: {
-    en: "Product Owner & engineer in banking payments — EBICS/SEPA, regulated financial infrastructure, now building AI-assisted products",
+    en: "Product Owner & Engineer in banking payments — EBICS/SEPA, regulated financial infrastructure, building AI-assisted products as side projects",
     de: "Full Stack Engineer\nmit Fokus auf robuste und wartbare Produkte",
   },
   summary: {
