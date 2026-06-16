@@ -8,12 +8,12 @@ export const RESUME_DATA = {
   location: "Linz, Österreich",
   locationLink: "https://www.google.com/maps/place/Linz",
   about: {
-    en: "Product Owner & Engineer in banking payments — EBICS/SEPA, regulated financial infrastructure, building AI-assisted products as side projects",
-    de: "Product Owner & Engineer im Zahlungsverkehr — EBICS/SEPA, regulierte Finanzinfrastruktur, Aufbau von KI-gestützten Produkten als Nebenprojekte",
+    en: "Payments Engineer, previously Product Owner\nbuilding regulated financial infrastructure — EBICS, SEPA, AI-assisted products",
+    de: "Payments Engineer, zuvor Product Owner\nAufbau regulierter Finanzinfrastruktur — EBICS, SEPA, KI-gestützte Produkte",
   },
   summary: {
-    en: "As a Full Stack Engineer and Product Owner at Raiffeisen Software GmbH, I've taken multiple banking products from 0 to 1. I led a team in corporate banking building communication tools between advisors and corporate customers, worked on payment and financial services (EBICS/SEPA), and earlier built advisor-customer communication features in private banking — all backed by deep expertise in Angular and Java.",
-    de: "Als Full Stack Engineer und Product Owner bei der Raiffeisen Software GmbH habe ich mehrere Banking-Produkte von 0 auf 1 gebracht. Ich habe ein Team im Firmenkundenbanking geleitet, das Kommunikationstools zwischen Beratern und Firmenkunden entwickelt hat, im Zahlungsverkehr und Finanzdienstleistungsbereich (EBICS/SEPA) gearbeitet und zuvor im Privatkundenbanking Kommunikationsfunktionen zwischen Kunden und Beratern entwickelt — mit fundierter Expertise in Angular und Java.",
+    en: "As a Payments Engineer and former Product Owner at Raiffeisen Software GmbH, I've taken multiple banking products from 0 to 1. I led a team in corporate banking building communication tools between advisors and corporate customers, worked on payment and financial services (EBICS/SEPA), and earlier built advisor-customer communication features in private banking — all backed by deep expertise in Angular and Java.",
+    de: "Als Payments Engineer und ehemaliger Product Owner bei der Raiffeisen Software GmbH habe ich mehrere Banking-Produkte von 0 auf 1 gebracht. Ich habe ein Team im Firmenkundenbanking geleitet, das Kommunikationstools zwischen Beratern und Firmenkunden entwickelt hat, im Zahlungsverkehr und Finanzdienstleistungsbereich (EBICS/SEPA) gearbeitet und zuvor im Privatkundenbanking Kommunikationsfunktionen zwischen Kunden und Beratern entwickelt — mit fundierter Expertise in Angular und Java.",
   },
   avatarUrl: "https://avatars.githubusercontent.com/u/15075183?v=4",
   contact: {
