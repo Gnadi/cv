@@ -31,7 +31,9 @@ test("dark mode has no accessibility violations", async ({ page }) => {
 
 test("the command menu has no accessibility violations", async ({ page }) => {
   await page.goto("/en");
-  await page.getByRole("button", { name: /open command menu/i }).click();
+  // The floating button is xl:hidden, and this viewport is xl — at this width
+  // the shortcut is the only way in, which is what the hint bar advertises.
+  await page.keyboard.press("ControlOrMeta+j");
   await expect(page.getByRole("dialog")).toBeVisible();
 
   const { violations } = await new AxeBuilder({ page })

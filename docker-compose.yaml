@@ -7,7 +7,7 @@ services:
         # arg rather than only a runtime environment variable.
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
     ports:
-      - '3000:3000'
+      - "3000:3000"
     environment:
       - NODE_ENV=production
     restart: unless-stopped

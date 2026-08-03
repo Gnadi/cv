@@ -12,13 +12,13 @@ test.describe("language routing", () => {
     await page.goto("/en");
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await expect(
-      page.getByRole("heading", { name: "Work Experience" })
+      page.getByRole("heading", { name: "Work Experience" }),
     ).toBeVisible();
 
     await page.goto("/de");
     await expect(page.locator("html")).toHaveAttribute("lang", "de");
     await expect(
-      page.getByRole("heading", { name: "Berufserfahrung" })
+      page.getByRole("heading", { name: "Berufserfahrung" }),
     ).toBeVisible();
   });
 
@@ -53,7 +53,7 @@ test.describe("accessibility", () => {
       .evaluateAll((els) =>
         els
           .map((e) => e.getAttribute("aria-label"))
-          .filter((n): n is string => !!n)
+          .filter((n): n is string => !!n),
       );
     expect(new Set(names).size).toBe(names.length);
   });
@@ -65,7 +65,7 @@ test.describe("accessibility", () => {
     const unsafe = await page
       .locator('a[target="_blank"]')
       .evaluateAll((els) =>
-        els.filter((e) => !e.rel.includes("noopener")).map((e) => e.href)
+        els.filter((e) => !e.rel.includes("noopener")).map((e) => e.href),
       );
     expect(unsafe).toEqual([]);
   });
@@ -96,7 +96,7 @@ test.describe("print output", () => {
     // than the viewport, which would mask a CV that already fits.
     const printableHeight = 1123 - 2 * 45;
     const height = await page.evaluate(() =>
-      Math.ceil(document.body.getBoundingClientRect().height)
+      Math.ceil(document.body.getBoundingClientRect().height),
     );
     expect(height).toBeLessThanOrEqual(printableHeight);
   });
@@ -107,8 +107,8 @@ test.describe("print output", () => {
     await expect(page.locator("html")).toHaveClass(/dark/);
 
     await page.emulateMedia({ media: "print" });
-    const bg = await page.evaluate(() =>
-      getComputedStyle(document.body).backgroundColor
+    const bg = await page.evaluate(
+      () => getComputedStyle(document.body).backgroundColor,
     );
     expect(bg).toBe("rgb(255, 255, 255)");
   });

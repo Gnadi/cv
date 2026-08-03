@@ -26,45 +26,43 @@ export default async function OpengraphImage({
   const t = createTranslator(isLanguage(lang) ? lang : DEFAULT_LANGUAGE);
 
   return new ImageResponse(
-    (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        padding: "80px",
+        background: "#ffffff",
+        color: "#0b0d17",
+      }}
+    >
+      <div style={{ fontSize: 68, fontWeight: 700, letterSpacing: "-0.02em" }}>
+        {RESUME_DATA.name}
+      </div>
       <div
         style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: "80px",
-          background: "#ffffff",
-          color: "#0b0d17",
+          marginTop: 28,
+          fontSize: 32,
+          lineHeight: 1.4,
+          color: "#4b5563",
+          whiteSpace: "pre-line",
         }}
       >
-        <div style={{ fontSize: 68, fontWeight: 700, letterSpacing: "-0.02em" }}>
-          {RESUME_DATA.name}
-        </div>
-        <div
-          style={{
-            marginTop: 28,
-            fontSize: 32,
-            lineHeight: 1.4,
-            color: "#4b5563",
-            whiteSpace: "pre-line",
-          }}
-        >
-          {t(RESUME_DATA.about)}
-        </div>
-        <div
-          style={{
-            marginTop: "auto",
-            display: "flex",
-            fontSize: 26,
-            color: "#6b7280",
-          }}
-        >
-          {RESUME_DATA.location}
-        </div>
+        {t(RESUME_DATA.about)}
       </div>
-    ),
-    size
+      <div
+        style={{
+          marginTop: "auto",
+          display: "flex",
+          fontSize: 26,
+          color: "#6b7280",
+        }}
+      >
+        {RESUME_DATA.location}
+      </div>
+    </div>,
+    size,
   );
 }

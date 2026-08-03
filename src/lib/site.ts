@@ -19,7 +19,7 @@ if (
   typeof window === "undefined"
 ) {
   console.warn(
-    "[cv] NEXT_PUBLIC_SITE_URL is not set — metadata, sitemap and robots.txt will point at http://localhost:3000."
+    "[cv] NEXT_PUBLIC_SITE_URL is not set — metadata, sitemap and robots.txt will point at http://localhost:3000.",
   );
 }
 

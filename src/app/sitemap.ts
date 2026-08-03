@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
     alternates: {
       languages: Object.fromEntries(
-        LANGUAGES.map((l) => [l, `${siteUrl}/${l}`])
+        LANGUAGES.map((l) => [l, `${siteUrl}/${l}`]),
       ),
     },
   }));

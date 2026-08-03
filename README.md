@@ -61,8 +61,8 @@ reuse a browser that is already installed.
 
 # Configuration
 
-| Variable               | Purpose                                                                  |
-| ---------------------- | ------------------------------------------------------------------------ |
+| Variable               | Purpose                                                                                                                                                                                     |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `NEXT_PUBLIC_SITE_URL` | Canonical origin for metadata and OpenGraph URLs, e.g. `https://cv.example.com`. On Vercel the production domain is used automatically; otherwise it falls back to `http://localhost:3000`. |
 
 # Run with Docker
@@ -82,7 +82,7 @@ docker compose up -d
 Stop the Container
 
 ```
-docker compose down 
+docker compose down
 ```
 
 # License

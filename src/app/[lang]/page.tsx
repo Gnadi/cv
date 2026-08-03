@@ -23,11 +23,13 @@ export default async function Page({
   const t = createTranslator(lang);
 
   return (
-    <main className="container relative mx-auto scroll-my-12 overflow-auto p-4 print:p-0 md:p-16">
+    <main className="container relative mx-auto scroll-my-12 overflow-auto p-4 md:p-16 print:p-0">
       <section className="mx-auto w-full max-w-2xl space-y-8 print:space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex-1 space-y-1.5">
-            <h1 className="text-xl font-bold print:text-[15px]">{RESUME_DATA.name}</h1>
+            <h1 className="text-xl font-bold print:text-[15px]">
+              {RESUME_DATA.name}
+            </h1>
             <p className="mr-5 max-w-md whitespace-pre-line font-mono text-sm text-muted-foreground print:text-[10px] print:leading-snug">
               {t(RESUME_DATA.about)}
             </p>
@@ -65,7 +67,11 @@ export default async function Page({
                   aria-label={social.name}
                   asChild
                 >
-                  <a href={social.url} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <social.icon className="size-4" />
                   </a>
                 </Button>
@@ -88,13 +94,17 @@ export default async function Page({
           </Avatar>
         </div>
         <Section>
-          <h2 className="text-xl font-bold print:text-[15px]">{t(RESUME_DATA.sections.about)}</h2>
+          <h2 className="text-xl font-bold print:text-[15px]">
+            {t(RESUME_DATA.sections.about)}
+          </h2>
           <p className="text-pretty font-mono text-sm text-muted-foreground print:text-[10px] print:leading-snug">
             {t(RESUME_DATA.summary)}
           </p>
         </Section>
         <Section>
-          <h2 className="text-xl font-bold print:text-[15px]">{t(RESUME_DATA.sections.work)}</h2>
+          <h2 className="text-xl font-bold print:text-[15px]">
+            {t(RESUME_DATA.sections.work)}
+          </h2>
           {RESUME_DATA.work.map((work) => {
             return (
               <Card key={work.company}>
@@ -166,17 +176,24 @@ export default async function Page({
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="mt-2 print:mt-1 print:text-[10px]">{t(education.degree)}</CardContent>
+                <CardContent className="mt-2 print:mt-1 print:text-[10px]">
+                  {t(education.degree)}
+                </CardContent>
               </Card>
             );
           })}
         </Section>
         <Section>
-          <h2 className="text-xl font-bold print:text-[15px]">{t(RESUME_DATA.sections.skills)}</h2>
+          <h2 className="text-xl font-bold print:text-[15px]">
+            {t(RESUME_DATA.sections.skills)}
+          </h2>
           <div className="flex flex-wrap gap-1">
             {RESUME_DATA.skills.map((skill) => {
               return (
-                <Badge key={skill} className="print:px-1 print:py-0 print:text-[9px]">
+                <Badge
+                  key={skill}
+                  className="print:px-1 print:py-0 print:text-[9px]"
+                >
                   {skill}
                 </Badge>
               );
@@ -190,7 +207,10 @@ export default async function Page({
           <div className="flex flex-wrap gap-1">
             {RESUME_DATA.aiSkills.map((skill) => {
               return (
-                <Badge key={skill} className="print:px-1 print:py-0 print:text-[9px]">
+                <Badge
+                  key={skill}
+                  className="print:px-1 print:py-0 print:text-[9px]"
+                >
                   {skill}
                 </Badge>
               );
@@ -202,7 +222,7 @@ export default async function Page({
           <h2 className="text-xl font-bold print:text-[15px]">
             {t(RESUME_DATA.sections.projects)}
           </h2>
-          <div className="print-projects-grid -mx-3 grid grid-cols-1 gap-3 print:grid-cols-3 print:gap-2 md:grid-cols-2 lg:grid-cols-3">
+          <div className="print-projects-grid -mx-3 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 print:grid-cols-3 print:gap-2">
             {RESUME_DATA.projects.map((project) => {
               return (
                 <ProjectCard
