@@ -15,6 +15,14 @@ export const RESUME_DATA = {
     en: "As a Payments Engineer and former Product Owner at Raiffeisen Software GmbH, I've taken multiple banking products from 0 to 1. I led a team in corporate banking building communication tools between advisors and corporate customers, worked on payment and financial services (EBICS/SEPA), and earlier built advisor-customer communication features in private banking — all backed by deep expertise in Angular and Java.",
     de: "Als Payments Engineer und ehemaliger Product Owner bei der Raiffeisen Software GmbH habe ich mehrere Banking-Produkte von 0 auf 1 gebracht. Ich habe ein Team im Firmenkundenbanking geleitet, das Kommunikationstools zwischen Beratern und Firmenkunden entwickelt hat, im Zahlungsverkehr und Finanzdienstleistungsbereich (EBICS/SEPA) gearbeitet und zuvor im Privatkundenbanking Kommunikationsfunktionen zwischen Kunden und Beratern entwickelt — mit fundierter Expertise in Angular und Java.",
   },
+  sections: {
+    about: { en: "About", de: "Über mich" },
+    work: { en: "Work Experience", de: "Berufserfahrung" },
+    education: { en: "Education", de: "Ausbildung" },
+    skills: { en: "Skills", de: "Kenntnisse" },
+    aiSkills: { en: "AI Skills", de: "KI-Kenntnisse" },
+    projects: { en: "Projects", de: "Projekte" },
+  },
   avatarUrl: "https://avatars.githubusercontent.com/u/15075183?v=4",
   contact: {
     email: "johannes.gnadlinger1997@gmail.com",
