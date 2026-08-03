@@ -97,7 +97,12 @@ export default function Page() {
                 <CardHeader>
                   <div className="flex items-center justify-between gap-x-2 text-base">
                     <h3 className="inline-flex items-center justify-center gap-x-1 font-semibold leading-none">
-                      <a className="text-base hover:underline" href={work.link}>
+                      <a
+                        className="text-base hover:underline"
+                        href={work.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         {work.company}
                       </a>
 
@@ -137,7 +142,12 @@ export default function Page() {
                 <CardHeader>
                   <div className="flex items-center justify-between gap-x-2 text-base">
                     <h3 className="font-semibold leading-none">
-                      <a className="hover:underline" href={education.link}>
+                      <a
+                        className="hover:underline"
+                        href={education.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         {education.school}
                       </a>
                     </h3>

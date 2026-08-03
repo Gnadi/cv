@@ -9,7 +9,6 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
 } from "@/components/ui/command";
 import { Button } from "./ui/button";
 import { CommandIcon, Printer } from "lucide-react";
@@ -91,7 +90,6 @@ export const CommandMenu = ({ links }: Props) => {
               </CommandItem>
             ))}
           </CommandGroup>
-          <CommandSeparator />
         </CommandList>
       </CommandDialog>
     </>

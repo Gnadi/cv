@@ -5,13 +5,14 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useState,
+  useSyncExternalStore,
   ReactNode,
 } from "react";
 
 type Language = "en" | "de";
 
 const STORAGE_KEY = "cv-language";
+const DEFAULT_LANGUAGE: Language = "en";
 
 interface LanguageContextType {
   language: Language;
@@ -27,17 +28,39 @@ function isLanguage(value: string | null): value is Language {
   return value === "en" || value === "de";
 }
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("en");
+// localStorage is an external store, so the language is read through
+// useSyncExternalStore: the server snapshot keeps hydration consistent, and
+// the subscription picks up changes made in other tabs.
+const listeners = new Set<() => void>();
 
-  // Read the stored preference after mount. Reading it during render would
-  // desync the server-rendered markup from the client.
-  useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (isLanguage(stored)) {
-      setLanguageState(stored);
-    }
-  }, []);
+function emit() {
+  listeners.forEach((listener) => listener());
+}
+
+function subscribe(onStoreChange: () => void) {
+  listeners.add(onStoreChange);
+  window.addEventListener("storage", onStoreChange);
+  return () => {
+    listeners.delete(onStoreChange);
+    window.removeEventListener("storage", onStoreChange);
+  };
+}
+
+function getSnapshot(): Language {
+  const stored = window.localStorage.getItem(STORAGE_KEY);
+  return isLanguage(stored) ? stored : DEFAULT_LANGUAGE;
+}
+
+function getServerSnapshot(): Language {
+  return DEFAULT_LANGUAGE;
+}
+
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const language = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
 
   // Keep <html lang> in sync so screen readers and search engines see the
   // language the page is actually rendered in.
@@ -46,8 +69,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [language]);
 
   const setLanguage = useCallback((lang: Language) => {
-    setLanguageState(lang);
     window.localStorage.setItem(STORAGE_KEY, lang);
+    emit();
   }, []);
 
   const t = (translations: { en: string; de: string }) => {

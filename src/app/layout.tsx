@@ -6,9 +6,34 @@ import "./globals.css";
 import React from "react";
 import { LanguageProvider } from "@/contexts/language-context";
 
+const title = "Johannes Gnadlinger | Payments Engineer & former Product Owner";
+const description =
+  "CV of Johannes Gnadlinger — Payments Engineer and former Product Owner in banking payments (EBICS/SEPA) at Raiffeisen Software, Linz. Regulated financial infrastructure and AI-assisted product development.";
+
+// Set NEXT_PUBLIC_SITE_URL to pin the canonical origin. On Vercel the
+// production domain is used automatically; locally it falls back to the dev
+// server so relative metadata URLs still resolve.
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000");
+
 export const metadata: Metadata = {
-  title: "Johannes Gnadlinger | Payments Engineer & former Product Owner",
-  description: "CV of Johannes Gnadlinger — Payments Engineer and former Product Owner in banking payments (EBICS/SEPA) at Raiffeisen Software, Linz. Regulated financial infrastructure and AI-assisted product development.",
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    type: "profile",
+    url: "/",
+  },
+  twitter: {
+    card: "summary",
+    title,
+    description,
+  },
 };
 
 // If loading a variable font, you don't need to specify the font weight
