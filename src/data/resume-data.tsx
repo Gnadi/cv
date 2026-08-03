@@ -23,7 +23,16 @@ export const RESUME_DATA = {
     aiSkills: { en: "AI Skills", de: "KI-Kenntnisse" },
     projects: { en: "Projects", de: "Projekte" },
   },
-  avatarUrl: "https://avatars.githubusercontent.com/u/15075183?v=4",
+  ui: {
+    emailMe: { en: "Email me", de: "E-Mail schreiben" },
+    toggleTheme: {
+      en: "Switch between light and dark mode",
+      de: "Zwischen hellem und dunklem Modus wechseln",
+    },
+  },
+  // Served from /public so the CV does not depend on GitHub being reachable
+  // at render time. Replace the file to change the picture.
+  avatarUrl: "/avatar.jpg",
   contact: {
     email: "johannes.gnadlinger1997@gmail.com",
     social: [
@@ -73,7 +82,7 @@ export const RESUME_DATA = {
         de: "Ingenieur Zertifizierung",
       },
       start: "2026",
-      end: ""
+      end: "",
     },
   ],
   work: [
@@ -89,9 +98,11 @@ export const RESUME_DATA = {
         de: "heute",
       },
       description: {
-        en: "2018 - 2022: Developer in Team VT, building private banking communication features between customers and their advisors, and corporate banking features for advisor and insurance interaction. Also served as Product Owner, leading a team in corporate banking that built communication tools between advisors and corporate customers. \n \n" +
+        en:
+          "2018 - 2022: Developer in Team VT, building private banking communication features between customers and their advisors, and corporate banking features for advisor and insurance interaction. Also served as Product Owner, leading a team in corporate banking that built communication tools between advisors and corporate customers. \n \n" +
           "2023 - now: Developer in Team ZV, working on payment and financial services in corporate banking — developing new payment transaction features and migrating from MBS to the EBICS banking standard.",
-        de: "2018 - 2022: Entwickler im Team VT, Entwicklung von Kommunikationsfunktionen im Privatkundenbanking zwischen Kunden und ihren Beratern sowie Firmenkundenbanking-Features zur Interaktion mit Beratern und Versicherungen. Zusätzlich als Product Owner tätig mit Leitung eines Teams im Firmenkundenbanking, das Kommunikationstools zwischen Beratern und Firmenkunden entwickelt hat. \n \n" +
+        de:
+          "2018 - 2022: Entwickler im Team VT, Entwicklung von Kommunikationsfunktionen im Privatkundenbanking zwischen Kunden und ihren Beratern sowie Firmenkundenbanking-Features zur Interaktion mit Beratern und Versicherungen. Zusätzlich als Product Owner tätig mit Leitung eines Teams im Firmenkundenbanking, das Kommunikationstools zwischen Beratern und Firmenkunden entwickelt hat. \n \n" +
           "2023 - heute: Entwickler im Team ZV, Tätigkeit im Zahlungsverkehr und Finanzdienstleistungsbereich im Firmenkundenbanking — Entwicklung neuer Zahlungsverkehrs-Features und Migration vom MBS- zum EBICS-Banking-Standard.",
       },
     },
