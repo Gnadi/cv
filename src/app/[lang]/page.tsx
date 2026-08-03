@@ -1,5 +1,3 @@
-"use client";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,18 +8,27 @@ import { Button } from "@/components/ui/button";
 import { RESUME_DATA } from "@/data/resume-data";
 import { ProjectCard } from "@/components/project-card";
 import { LanguageSwitcher } from "@/components/language-switcher";
-import { useLanguage } from "@/contexts/language-context";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { createTranslator, isLanguage } from "@/lib/i18n";
+import { notFound } from "next/navigation";
 
-export default function Page() {
-  const { t } = useLanguage();
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  if (!isLanguage(lang)) notFound();
+
+  const t = createTranslator(lang);
 
   return (
     <main className="container relative mx-auto scroll-my-12 overflow-auto p-4 print:p-0 md:p-16">
-      <section className="mx-auto w-full max-w-2xl space-y-8 bg-white print:space-y-4">
+      <section className="mx-auto w-full max-w-2xl space-y-8 print:space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex-1 space-y-1.5">
-            <h1 className="text-xl font-bold">{RESUME_DATA.name}</h1>
-            <p className="max-w-md font-mono text-sm text-muted-foreground mr-5 whitespace-pre-line">
+            <h1 className="text-xl font-bold print:text-[15px]">{RESUME_DATA.name}</h1>
+            <p className="mr-5 max-w-md whitespace-pre-line font-mono text-sm text-muted-foreground print:text-[10px] print:leading-snug">
               {t(RESUME_DATA.about)}
             </p>
             <p className="max-w-md items-center text-pretty font-mono text-xs text-muted-foreground">
@@ -42,7 +49,7 @@ export default function Page() {
                   variant="outline"
                   size="icon"
                   asChild
-                  aria-label="Email me"
+                  aria-label={t(RESUME_DATA.ui.emailMe)}
                 >
                   <a href={`mailto:${RESUME_DATA.contact.email}`}>
                     <MailIcon className="size-4" />
@@ -58,16 +65,13 @@ export default function Page() {
                   aria-label={social.name}
                   asChild
                 >
-                  <a
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href={social.url} target="_blank" rel="noopener noreferrer">
                     <social.icon className="size-4" />
                   </a>
                 </Button>
               ))}
-              <LanguageSwitcher />
+              <ThemeToggle label={t(RESUME_DATA.ui.toggleTheme)} />
+              <LanguageSwitcher current={lang} />
             </div>
             <div className="hidden flex-col gap-x-1 font-mono text-sm text-muted-foreground print:flex">
               {RESUME_DATA.contact.email ? (
@@ -84,13 +88,13 @@ export default function Page() {
           </Avatar>
         </div>
         <Section>
-          <h2 className="text-xl font-bold">{t(RESUME_DATA.sections.about)}</h2>
-          <p className="text-pretty font-mono text-sm text-muted-foreground">
+          <h2 className="text-xl font-bold print:text-[15px]">{t(RESUME_DATA.sections.about)}</h2>
+          <p className="text-pretty font-mono text-sm text-muted-foreground print:text-[10px] print:leading-snug">
             {t(RESUME_DATA.summary)}
           </p>
         </Section>
         <Section>
-          <h2 className="text-xl font-bold">{t(RESUME_DATA.sections.work)}</h2>
+          <h2 className="text-xl font-bold print:text-[15px]">{t(RESUME_DATA.sections.work)}</h2>
           {RESUME_DATA.work.map((work) => {
             return (
               <Card key={work.company}>
@@ -98,7 +102,7 @@ export default function Page() {
                   <div className="flex items-center justify-between gap-x-2 text-base">
                     <h3 className="inline-flex items-center justify-center gap-x-1 font-semibold leading-none">
                       <a
-                        className="text-base hover:underline"
+                        className="text-base hover:underline print:text-[11px]"
                         href={work.link}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -110,7 +114,7 @@ export default function Page() {
                         {work.badges.map((badge) => (
                           <Badge
                             variant="secondary"
-                            className="align-middle text-xs"
+                            className="align-middle text-xs print:px-1 print:py-0 print:text-[8px]"
                             key={badge}
                           >
                             {badge}
@@ -118,16 +122,19 @@ export default function Page() {
                         ))}
                       </span>
                     </h3>
-                    <div className="text-sm tabular-nums text-gray-500">
-                      {work.start}{work.end != null ? ` - ${typeof work.end === 'object' ? t(work.end) : work.end}` : ''}
+                    <div className="text-sm tabular-nums text-muted-foreground print:text-[10px]">
+                      {work.start}
+                      {work.end != null
+                        ? ` - ${typeof work.end === "object" ? t(work.end) : work.end}`
+                        : ""}
                     </div>
                   </div>
 
-                  <h4 className="font-mono text-sm leading-none">
+                  <h4 className="font-mono text-sm leading-none print:text-[10px]">
                     {work.title}
                   </h4>
                 </CardHeader>
-                <CardContent className="mt-2 text-sm whitespace-pre-wrap">
+                <CardContent className="mt-2 whitespace-pre-wrap text-sm print:mt-1 print:text-[10px] print:leading-snug">
                   {t(work.description)}
                 </CardContent>
               </Card>
@@ -135,7 +142,9 @@ export default function Page() {
           })}
         </Section>
         <Section>
-          <h2 className="text-xl font-bold">{t(RESUME_DATA.sections.education)}</h2>
+          <h2 className="text-xl font-bold print:text-[15px]">
+            {t(RESUME_DATA.sections.education)}
+          </h2>
           {RESUME_DATA.education.map((education) => {
             return (
               <Card key={education.school}>
@@ -143,7 +152,7 @@ export default function Page() {
                   <div className="flex items-center justify-between gap-x-2 text-base">
                     <h3 className="font-semibold leading-none">
                       <a
-                        className="hover:underline"
+                        className="hover:underline print:text-[11px]"
                         href={education.link}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -151,36 +160,48 @@ export default function Page() {
                         {education.school}
                       </a>
                     </h3>
-                    <div className="text-sm tabular-nums text-gray-500">
-                      {education.start}{education.end.length > 0 ? ` - ${education.end}` : ''}
-
+                    <div className="text-sm tabular-nums text-muted-foreground print:text-[10px]">
+                      {education.start}
+                      {education.end.length > 0 ? ` - ${education.end}` : ""}
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="mt-2">{t(education.degree)}</CardContent>
+                <CardContent className="mt-2 print:mt-1 print:text-[10px]">{t(education.degree)}</CardContent>
               </Card>
             );
           })}
         </Section>
         <Section>
-          <h2 className="text-xl font-bold">{t(RESUME_DATA.sections.skills)}</h2>
+          <h2 className="text-xl font-bold print:text-[15px]">{t(RESUME_DATA.sections.skills)}</h2>
           <div className="flex flex-wrap gap-1">
             {RESUME_DATA.skills.map((skill) => {
-              return <Badge key={skill}>{skill}</Badge>;
+              return (
+                <Badge key={skill} className="print:px-1 print:py-0 print:text-[9px]">
+                  {skill}
+                </Badge>
+              );
             })}
           </div>
         </Section>
         <Section>
-          <h2 className="text-xl font-bold">{t(RESUME_DATA.sections.aiSkills)}</h2>
+          <h2 className="text-xl font-bold print:text-[15px]">
+            {t(RESUME_DATA.sections.aiSkills)}
+          </h2>
           <div className="flex flex-wrap gap-1">
             {RESUME_DATA.aiSkills.map((skill) => {
-              return <Badge key={skill}>{skill}</Badge>;
+              return (
+                <Badge key={skill} className="print:px-1 print:py-0 print:text-[9px]">
+                  {skill}
+                </Badge>
+              );
             })}
           </div>
         </Section>
 
         <Section className="scroll-mb-16">
-          <h2 className="text-xl font-bold">{t(RESUME_DATA.sections.projects)}</h2>
+          <h2 className="text-xl font-bold print:text-[15px]">
+            {t(RESUME_DATA.sections.projects)}
+          </h2>
           <div className="print-projects-grid -mx-3 grid grid-cols-1 gap-3 print:grid-cols-3 print:gap-2 md:grid-cols-2 lg:grid-cols-3">
             {RESUME_DATA.projects.map((project) => {
               return (
@@ -197,15 +218,7 @@ export default function Page() {
         </Section>
       </section>
 
-      <CommandMenu
-        links={[
-          ...RESUME_DATA.contact.social.map((socialMediaLink) => ({
-            url: socialMediaLink.url,
-            title: socialMediaLink.name,
-            icon: socialMediaLink.icon,
-          })),
-        ]}
-      />
+      <CommandMenu />
     </main>
   );
 }

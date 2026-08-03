@@ -23,7 +23,16 @@ export const RESUME_DATA = {
     aiSkills: { en: "AI Skills", de: "KI-Kenntnisse" },
     projects: { en: "Projects", de: "Projekte" },
   },
-  avatarUrl: "https://avatars.githubusercontent.com/u/15075183?v=4",
+  ui: {
+    emailMe: { en: "Email me", de: "E-Mail schreiben" },
+    toggleTheme: {
+      en: "Switch between light and dark mode",
+      de: "Zwischen hellem und dunklem Modus wechseln",
+    },
+  },
+  // Served from /public so the CV does not depend on GitHub being reachable
+  // at render time. Replace the file to change the picture.
+  avatarUrl: "/avatar.jpg",
   contact: {
     email: "johannes.gnadlinger1997@gmail.com",
     social: [

@@ -12,16 +12,13 @@ import {
 } from "@/components/ui/command";
 import { Button } from "./ui/button";
 import { CommandIcon, Printer } from "lucide-react";
+import { RESUME_DATA } from "@/data/resume-data";
 
-interface Props {
-  links: {
-    url: string;
-    title: string;
-    icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  }[];
-}
+// The links are read here rather than passed in: the page is a server
+// component and React components cannot cross that boundary as props.
+const links = RESUME_DATA.contact.social;
 
-export const CommandMenu = ({ links }: Props) => {
+export const CommandMenu = () => {
   const [open, setOpen] = React.useState(false);
   const [isMac, setIsMac] = React.useState(false);
 
@@ -77,16 +74,16 @@ export const CommandMenu = ({ links }: Props) => {
             </CommandItem>
           </CommandGroup>
           <CommandGroup heading="Links">
-            {links.map(({ url, title, icon: Icon }) => (
+            {links.map(({ url, name, icon: Icon }) => (
               <CommandItem
                 key={url}
                 onSelect={() => {
                   setOpen(false);
-                  window.open(url, "_blank");
+                  window.open(url, "_blank", "noopener,noreferrer");
                 }}
               >
                 {Icon && <Icon />}
-                <span>{title}</span>
+                <span>{name}</span>
               </CommandItem>
             ))}
           </CommandGroup>

@@ -1,21 +1,29 @@
-"use client";
+import Link from "next/link";
 
-import { useLanguage } from "@/contexts/language-context";
 import { Button } from "@/components/ui/button";
+import { LANGUAGE_LABELS, type Language } from "@/lib/i18n";
 
-export function LanguageSwitcher() {
-  const { language, setLanguage } = useLanguage();
+/**
+ * A real link rather than a state toggle, so each language has a shareable,
+ * crawlable URL.
+ */
+export function LanguageSwitcher({ current }: { current: Language }) {
+  const other: Language = current === "en" ? "de" : "en";
 
   return (
-    <div className="print:hidden">
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => setLanguage(language === "en" ? "de" : "en")}
-        className="font-mono text-xs"
+    <Button
+      variant="outline"
+      size="sm"
+      className="font-mono text-xs print:hidden"
+      asChild
+    >
+      <Link
+        href={`/${other}`}
+        hrefLang={other}
+        aria-label={`Switch to ${LANGUAGE_LABELS[other]}`}
       >
-        {language === "en" ? "DE" : "EN"}
-      </Button>
-    </div>
+        {other.toUpperCase()}
+      </Link>
+    </Button>
   );
 }
