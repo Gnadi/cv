@@ -162,5 +162,18 @@ export const RESUME_DATA = {
         href: "https://flexpoll.app",
       },
     },
+    {
+      title: "myFAOS",
+      techStack: ["Side Project", "React", "Vite", "Firebase"],
+      description: {
+        en: "A mobile-first family organizer with a shared calendar, tasks and child documentation",
+        de: "Ein mobile-first Familienorganizer mit geteiltem Kalender, Aufgaben und Kinddokumentation",
+      },
+      logo: ConsultlyLogo,
+      link: {
+        label: "myfaos.app",
+        href: "https://myfaos.app",
+      },
+    },
   ],
 } as const;
