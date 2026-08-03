@@ -75,10 +75,6 @@
   }
 }
 
-.print-force-new-page {
-  page-break-before: always;
-}
-
 @media print {
   /* Set a tight, consistent page margin so the CV fits on a single page */
   @page {
@@ -86,13 +82,18 @@
     margin: 1.2cm;
   }
 
-  /* Never force the (hidden) projects section onto a second page */
-  .print-force-new-page {
-    page-break-before: auto;
-  }
-
   /* Keep work/education cards from splitting across pages */
   section > div {
+    break-inside: avoid;
+  }
+
+  /* The projects grid may flow across a page break — otherwise the rule above
+     would push the whole grid onto the next page. Its cards may not. */
+  .print-projects-grid {
+    break-inside: auto;
+  }
+
+  .print-projects-grid > * {
     break-inside: avoid;
   }
 }

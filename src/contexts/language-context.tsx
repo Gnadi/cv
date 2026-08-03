@@ -1,8 +1,17 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
 
 type Language = "en" | "de";
+
+const STORAGE_KEY = "cv-language";
 
 interface LanguageContextType {
   language: Language;
@@ -14,8 +23,32 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
   undefined
 );
 
+function isLanguage(value: string | null): value is Language {
+  return value === "en" || value === "de";
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>("en");
+  const [language, setLanguageState] = useState<Language>("en");
+
+  // Read the stored preference after mount. Reading it during render would
+  // desync the server-rendered markup from the client.
+  useEffect(() => {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    if (isLanguage(stored)) {
+      setLanguageState(stored);
+    }
+  }, []);
+
+  // Keep <html lang> in sync so screen readers and search engines see the
+  // language the page is actually rendered in.
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
+  const setLanguage = useCallback((lang: Language) => {
+    setLanguageState(lang);
+    window.localStorage.setItem(STORAGE_KEY, lang);
+  }, []);
 
   const t = (translations: { en: string; de: string }) => {
     return translations[language];
