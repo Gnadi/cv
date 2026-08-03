@@ -1,11 +1,21 @@
 import { ImageResponse } from "next/og";
 
 import { RESUME_DATA } from "@/data/resume-data";
-import { createTranslator, isLanguage, DEFAULT_LANGUAGE } from "@/lib/i18n";
+import {
+  LANGUAGES,
+  createTranslator,
+  isLanguage,
+  DEFAULT_LANGUAGE,
+} from "@/lib/i18n";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = `${RESUME_DATA.name} — CV`;
+
+// Without this the image is rendered on demand for every crawler request.
+export function generateStaticParams() {
+  return LANGUAGES.map((lang) => ({ lang }));
+}
 
 export default async function OpengraphImage({
   params,
