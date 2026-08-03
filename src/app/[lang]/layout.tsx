@@ -7,15 +7,7 @@ import "../globals.css";
 import React from "react";
 import { ThemeScript } from "@/components/theme-script";
 import { LANGUAGES, isLanguage, type Language } from "@/lib/i18n";
-
-// Set NEXT_PUBLIC_SITE_URL to pin the canonical origin. On Vercel the
-// production domain is used automatically; locally it falls back to the dev
-// server so relative metadata URLs still resolve.
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "http://localhost:3000");
+import { siteUrl } from "@/lib/site";
 
 const META: Record<Language, { title: string; description: string }> = {
   en: {
