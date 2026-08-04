@@ -27,9 +27,23 @@ Command.displayName = CommandPrimitive.displayName;
 interface CommandDialogProps extends DialogProps {}
 
 const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
+  // On touch devices, focusing the search field on open pops up the on-screen
+  // keyboard, which covers the commands the menu just opened to show. Keyboard
+  // users still land in the input, since that is how they drive the menu.
+  const handleOpenAutoFocus = (event: Event) => {
+    if (!window.matchMedia("(pointer: coarse)").matches) return;
+
+    event.preventDefault();
+    // Focus the dialog itself so the focus trap and Escape keep working.
+    (event.currentTarget as HTMLElement | null)?.focus();
+  };
+
   return (
     <Dialog {...props}>
-      <DialogContent className="overflow-hidden rounded-xl p-0 shadow-2xl sm:rounded-xl">
+      <DialogContent
+        onOpenAutoFocus={handleOpenAutoFocus}
+        className="overflow-hidden rounded-xl p-0 shadow-2xl sm:rounded-xl"
+      >
         <div className="flex items-center gap-2 border-b px-4 py-3">
           <CommandIcon className="h-4 w-4 text-muted-foreground" />
           <DialogTitle className="text-sm font-semibold">
