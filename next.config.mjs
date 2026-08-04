@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Emits a self-contained server bundle so the Docker runtime stage does not
-  // need node_modules or the source tree.
-  output: "standalone",
+  // Only the Docker build wants a self-contained server bundle. Setting it
+  // unconditionally breaks `next start`, which is what `npm start`, the test
+  // suite and Vercel all use.
+  output: process.env.NEXT_OUTPUT_STANDALONE === "1" ? "standalone" : undefined,
   async redirects() {
     return [
       {

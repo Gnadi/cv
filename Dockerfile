@@ -14,6 +14,8 @@ COPY . .
 ARG NEXT_PUBLIC_SITE_URL
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 ENV NEXT_TELEMETRY_DISABLED=1
+# Switches next.config.mjs to the standalone bundle this image copies below.
+ENV NEXT_OUTPUT_STANDALONE=1
 RUN npm run build
 
 # Runtime carries only the standalone server, static assets and public files —

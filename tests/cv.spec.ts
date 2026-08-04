@@ -114,6 +114,58 @@ test.describe("print output", () => {
   });
 });
 
+test.describe("command menu", () => {
+  test("does not focus the search field on touch devices", async ({
+    browser,
+  }) => {
+    // A touch context reports pointer: coarse, the same signal the dialog uses.
+    const context = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      hasTouch: true,
+      isMobile: true,
+    });
+    const page = await context.newPage();
+    await page.goto("/en");
+    await page.getByRole("button", { name: /open command menu/i }).click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+
+    // Otherwise the on-screen keyboard covers the commands.
+    await expect(page.getByPlaceholder("Type a command")).not.toBeFocused();
+    // The actions still have to be reachable and usable.
+    await expect(
+      page.getByRole("option", { name: /Print CV or save it as PDF/i }),
+    ).toBeVisible();
+    // Decorative icons must not double up the label of the item they sit in.
+    const linkedIn = page.getByRole("option", { name: /^LinkedIn$/ });
+    await expect(linkedIn).toBeVisible();
+
+    await context.close();
+  });
+
+  test("still focuses the search field with a mouse", async ({ page }) => {
+    await page.setViewportSize({ width: 1000, height: 900 });
+    await page.goto("/en");
+    await page.keyboard.press("ControlOrMeta+j");
+    await expect(page.getByRole("dialog")).toBeVisible();
+
+    await expect(page.getByPlaceholder("Type a command")).toBeFocused();
+  });
+});
+
+test.describe("project logos", () => {
+  test("render on screen but never in print", async ({ page }) => {
+    await page.goto("/en");
+    const logos = page.locator("[data-project-logo]");
+    const count = await logos.count();
+    // Activates by itself once a project in resume-data.tsx has a logo.
+    test.skip(count === 0, "no project logos configured yet");
+
+    await expect(logos.first()).toBeVisible();
+    await page.emulateMedia({ media: "print" });
+    await expect(logos.first()).toBeHidden();
+  });
+});
+
 test.describe("theme", () => {
   test("the choice survives a reload", async ({ page }) => {
     await page.goto("/en");
