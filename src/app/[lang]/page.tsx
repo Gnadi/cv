@@ -231,6 +231,7 @@ export default async function Page({
                   description={t(project.description)}
                   tags={project.techStack}
                   link={"link" in project ? project.link.href : undefined}
+                  logo={project.logo}
                 />
               );
             })}

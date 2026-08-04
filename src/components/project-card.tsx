@@ -1,3 +1,5 @@
+import Image, { type StaticImageData } from "next/image";
+
 import {
   Card,
   CardContent,
@@ -12,14 +14,26 @@ interface Props {
   description: string;
   tags: readonly string[];
   link?: string;
+  logo?: StaticImageData;
 }
 
-export function ProjectCard({ title, description, tags, link }: Props) {
+export function ProjectCard({ title, description, tags, link, logo }: Props) {
   return (
     <Card className="flex flex-col overflow-hidden border border-muted p-3 print:p-2">
       <CardHeader>
         <div className="space-y-1">
-          <CardTitle className="text-base print:text-[11px]">
+          <CardTitle className="flex items-center gap-2 text-base print:text-[11px]">
+            {logo ? (
+              // Decorative: the project name sits right next to it, so a
+              // screen reader would only repeat itself.
+              <Image
+                src={logo}
+                alt=""
+                aria-hidden="true"
+                data-project-logo=""
+                className="size-5 shrink-0 rounded object-contain print:hidden"
+              />
+            ) : null}
             {link ? (
               <a
                 href={link}

@@ -1,4 +1,3 @@
-import { ConsultlyLogo, ParabolLogo } from "@/images/logos";
 import { GitHubIcon, LinkedInIcon } from "@/components/icons";
 import { WebsiteIcon } from "@/components/icons/WebsiteIcon";
 
@@ -91,7 +90,6 @@ export const RESUME_DATA = {
       link: "https://r-software.at",
       badges: ["Linz"],
       title: "Full Stack Developer & Product Owner",
-      logo: ParabolLogo,
       start: "2018",
       end: {
         en: "now",
@@ -128,6 +126,10 @@ export const RESUME_DATA = {
     "Google Stitch",
     "Google Pomelli",
   ],
+  // To show a project logo, drop a square SVG or PNG into src/images/logos/,
+  // import it at the top of this file and put it in that project's `logo`
+  // slot, e.g. `logo: MyfaosLogo`. Logos render on screen only — the printed
+  // CV omits them to stay on a single page.
   projects: [
     {
       title: "Homepage",
@@ -136,7 +138,7 @@ export const RESUME_DATA = {
         en: "My personal Website",
         de: "Meine persönliche Webseite",
       },
-      logo: ConsultlyLogo,
+      logo: undefined,
       link: {
         label: "gnadlinger.me",
         href: "https://gnadlinger.me/",
@@ -149,7 +151,7 @@ export const RESUME_DATA = {
         en: "My personal Blog",
         de: "Mein persönlicher Blog",
       },
-      logo: ConsultlyLogo,
+      logo: undefined,
       link: {
         label: "blog.gnadlinger.me",
         href: "https://blog.gnadlinger.me/",
@@ -162,7 +164,7 @@ export const RESUME_DATA = {
         en: "A private social media platform",
         de: "Eine private Social-Media-Plattform",
       },
-      logo: ConsultlyLogo,
+      logo: undefined,
       link: {
         label: "kaydo.app",
         href: "https://kaydo.app",
@@ -175,7 +177,7 @@ export const RESUME_DATA = {
         en: "A polling platform with multiple poll types including location and live polls",
         de: "Eine Abstimmungsplattform mit verschiedenen Umfragetypen wie Standort- und Live-Abstimmungen",
       },
-      logo: ConsultlyLogo,
+      logo: undefined,
       link: {
         label: "flexpoll.app",
         href: "https://flexpoll.app",
@@ -188,7 +190,7 @@ export const RESUME_DATA = {
         en: "A mobile-first family organizer with a shared calendar, tasks and child documentation",
         de: "Ein mobile-first Familienorganizer mit geteiltem Kalender, Aufgaben und Kinddokumentation",
       },
-      logo: ConsultlyLogo,
+      logo: undefined,
       link: {
         label: "myfaos.app",
         href: "https://myfaos.app",
