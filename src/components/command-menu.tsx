@@ -26,7 +26,11 @@ export const CommandMenu = () => {
   // Resolved after mount — the server has no way to know the platform.
   React.useEffect(() => {
     setIsMac(/Mac|iPod|iPhone|iPad/.test(navigator.userAgent));
-    setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    setIsMobile(
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent,
+      ),
+    );
   }, []);
 
   React.useEffect(() => {
@@ -60,7 +64,10 @@ export const CommandMenu = () => {
         <CommandIcon className="my-6 size-6" />
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Type a command or search..." autoFocus={!isMobile} />
+        <CommandInput
+          placeholder="Type a command or search..."
+          autoFocus={!isMobile}
+        />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Actions">
