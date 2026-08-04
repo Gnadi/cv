@@ -24,12 +24,27 @@ const Command = React.forwardRef<
 
 Command.displayName = CommandPrimitive.displayName;
 
-interface CommandDialogProps extends DialogProps {}
+interface CommandDialogProps extends DialogProps {
+  /**
+   * Runs when the dialog grabs focus on open. Calling `preventDefault()` keeps
+   * focus off the search input — see the touch handling in `CommandMenu`.
+   */
+  onOpenAutoFocus?: React.ComponentPropsWithoutRef<
+    typeof DialogContent
+  >["onOpenAutoFocus"];
+}
 
-const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
+const CommandDialog = ({
+  children,
+  onOpenAutoFocus,
+  ...props
+}: CommandDialogProps) => {
   return (
     <Dialog {...props}>
-      <DialogContent className="overflow-hidden rounded-xl p-0 shadow-2xl sm:rounded-xl">
+      <DialogContent
+        onOpenAutoFocus={onOpenAutoFocus}
+        className="overflow-hidden rounded-xl p-0 shadow-2xl sm:rounded-xl"
+      >
         <div className="flex items-center gap-2 border-b px-4 py-3">
           <CommandIcon className="h-4 w-4 text-muted-foreground" />
           <DialogTitle className="text-sm font-semibold">

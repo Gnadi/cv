@@ -24,6 +24,18 @@ export default defineConfig({
           : {},
       },
     },
+    {
+      // A real touchscreen, so the command menu's coarse-pointer handling is
+      // exercised the way a phone exercises it.
+      name: "mobile-chromium",
+      testMatch: /command-menu\.spec\.ts/,
+      use: {
+        ...devices["Pixel 5"],
+        launchOptions: process.env.PLAYWRIGHT_CHROMIUM_PATH
+          ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH }
+          : {},
+      },
+    },
   ],
   webServer: {
     command: `npm run build && npx next start -p ${PORT}`,
