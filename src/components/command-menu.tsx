@@ -21,16 +21,14 @@ const links = RESUME_DATA.contact.social;
 export const CommandMenu = () => {
   const [open, setOpen] = React.useState(false);
   const [isMac, setIsMac] = React.useState(false);
-  const [isMobile, setIsMobile] = React.useState(false);
+  const [isTouch, setIsTouch] = React.useState(false);
 
   // Resolved after mount — the server has no way to know the platform.
   React.useEffect(() => {
     setIsMac(/Mac|iPod|iPhone|iPad/.test(navigator.userAgent));
-    setIsMobile(
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent,
-      ),
-    );
+    // A coarse primary pointer means a touchscreen without a mouse, i.e. a
+    // device that answers keyboard focus with an on-screen keyboard.
+    setIsTouch(window.matchMedia("(pointer: coarse)").matches);
   }, []);
 
   React.useEffect(() => {
@@ -44,6 +42,16 @@ export const CommandMenu = () => {
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
+
+  // On open the dialog focuses its first tabbable child, which is the search
+  // input. On touch devices that raises the virtual keyboard and buries the
+  // options, so focus the dialog itself instead — the input is one tap away
+  // for anyone who actually wants to search.
+  const handleOpenAutoFocus = (event: Event) => {
+    if (!isTouch) return;
+    event.preventDefault();
+    (event.currentTarget as HTMLElement | null)?.focus({ preventScroll: true });
+  };
 
   return (
     <>
@@ -63,11 +71,12 @@ export const CommandMenu = () => {
       >
         <CommandIcon className="my-6 size-6" />
       </Button>
-      <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput
-          placeholder="Type a command or search..."
-          autoFocus={!isMobile}
-        />
+      <CommandDialog
+        open={open}
+        onOpenChange={setOpen}
+        onOpenAutoFocus={handleOpenAutoFocus}
+      >
+        <CommandInput placeholder="Type a command or search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Actions">
