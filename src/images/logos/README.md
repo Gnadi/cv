@@ -1,5 +1,20 @@
 # Project logos
 
+## Fetch them from the project sites
+
+```bash
+node scripts/fetch-project-logos.mjs          # all projects
+node scripts/fetch-project-logos.mjs myFAOS   # just one
+```
+
+Each project's own site is asked for its icon — apple-touch-icon first, then
+web app manifest icons, then `<link rel="icon">`, then `/favicon.ico`. Files
+land in this directory and the script prints the exact lines to paste. It
+rejects HTML error pages served as icons and truncated downloads, both of
+which would otherwise break `next build`.
+
+## Or add them by hand
+
 Drop logo files here and import them in `src/data/resume-data.tsx`:
 
 ```ts
