@@ -12,7 +12,7 @@ test.describe("language routing", () => {
     await page.goto("/en");
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await expect(
-      page.getByRole("heading", { name: "Work Experience" }),
+      page.getByRole("heading", { name: "Professional Experience" }),
     ).toBeVisible();
 
     await page.goto("/de");
@@ -40,6 +40,43 @@ test.describe("language routing", () => {
 
   test("an unknown language 404s", async ({ request }) => {
     expect((await request.get("/fr")).status()).toBe(404);
+  });
+});
+
+test.describe("positioning", () => {
+  // The tenure used to render as one combined "Full Stack Developer & Product
+  // Owner" block, which buried the move into payments. Both phases have to
+  // stay visible as separate roles with their own date ranges.
+  test("the career phases are shown as two distinct roles", async ({
+    page,
+  }) => {
+    await page.goto("/en");
+
+    await expect(
+      page.getByRole("heading", { name: "Payments & Backend Engineer" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", {
+        name: "Full Stack Developer & Product Owner",
+      }),
+    ).toBeVisible();
+
+    await expect(page.getByText("2023 - Present")).toBeVisible();
+    await expect(page.getByText("2018 - 2022")).toBeVisible();
+  });
+
+  test("the headline states the positioning in both languages", async ({
+    page,
+  }) => {
+    await page.goto("/en");
+    await expect(
+      page.getByText("Building reliable financial infrastructure"),
+    ).toBeVisible();
+
+    await page.goto("/de");
+    await expect(
+      page.getByText("Verlässliche Finanzinfrastruktur"),
+    ).toBeVisible();
   });
 });
 
@@ -76,7 +113,9 @@ test.describe("print output", () => {
     await page.goto("/en");
     await page.emulateMedia({ media: "print" });
 
-    await expect(page.getByRole("heading", { name: "Projects" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Selected Projects" }),
+    ).toBeVisible();
     // Regression guard: the section used to be print:hidden, so the projects
     // were missing from the PDF that actually gets sent to people.
     for (const project of ["myFAOS", "Kaydo", "Flexpoll"]) {
