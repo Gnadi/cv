@@ -6,19 +6,25 @@ import { notFound } from "next/navigation";
 import "../globals.css";
 import React from "react";
 import { ThemeScript } from "@/components/theme-script";
+import { PersonJsonLd } from "@/components/person-json-ld";
+import { RESUME_DATA } from "@/data/resume-data";
 import { LANGUAGES, isLanguage, type Language } from "@/lib/i18n";
 import { siteUrl } from "@/lib/site";
 
+// Built from the canonical role in RESUME_DATA rather than restated, so the
+// title cannot drift away from the headline the page renders.
+const ROLE = RESUME_DATA.headline.role;
+
 const META: Record<Language, { title: string; description: string }> = {
   en: {
-    title: "Johannes Gnadlinger | Payments Engineer & former Product Owner",
+    title: `Johannes Gnadlinger — ${ROLE.en}`,
     description:
-      "CV of Johannes Gnadlinger — Payments Engineer and former Product Owner in banking payments (EBICS/SEPA) at Raiffeisen Software, Linz. Regulated financial infrastructure and AI-assisted product development.",
+      "Payments & Backend Engineer at Raiffeisen Software in Linz, Austria. 8+ years building payment systems for corporate banking — SEPA, EBICS and Java backend services. Former Product Owner.",
   },
   de: {
-    title: "Johannes Gnadlinger | Payments Engineer & ehem. Product Owner",
+    title: `Johannes Gnadlinger — ${ROLE.de}`,
     description:
-      "Lebenslauf von Johannes Gnadlinger — Payments Engineer und ehemaliger Product Owner im Zahlungsverkehr (EBICS/SEPA) bei Raiffeisen Software, Linz. Regulierte Finanzinfrastruktur und KI-gestützte Produktentwicklung.",
+      "Payments & Backend Engineer bei Raiffeisen Software in Linz. Über 8 Jahre Erfahrung mit Zahlungsverkehrssystemen im Firmenkundengeschäft — SEPA, EBICS und Java-Backend-Services. Zuvor Product Owner.",
   },
 };
 
@@ -58,6 +64,8 @@ export async function generateMetadata({
       title,
       description,
       type: "profile",
+      firstName: "Johannes",
+      lastName: "Gnadlinger",
       locale: lang === "de" ? "de_AT" : "en_US",
       url: `/${lang}`,
     },
@@ -83,6 +91,7 @@ export default async function RootLayout({
     <html lang={lang} className={inter.className} suppressHydrationWarning>
       <head>
         <ThemeScript />
+        <PersonJsonLd lang={lang} />
       </head>
       <body>{children}</body>
       <Analytics />

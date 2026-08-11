@@ -41,16 +41,18 @@ export default async function OpengraphImage({
       <div style={{ fontSize: 68, fontWeight: 700, letterSpacing: "-0.02em" }}>
         {RESUME_DATA.name}
       </div>
+      <div style={{ marginTop: 24, fontSize: 40, fontWeight: 600 }}>
+        {t(RESUME_DATA.headline.role)}
+      </div>
       <div
         style={{
-          marginTop: 28,
-          fontSize: 32,
+          marginTop: 16,
+          fontSize: 28,
           lineHeight: 1.4,
           color: "#4b5563",
-          whiteSpace: "pre-line",
         }}
       >
-        {t(RESUME_DATA.about)}
+        {t(RESUME_DATA.headline.tagline)}
       </div>
       <div
         style={{
