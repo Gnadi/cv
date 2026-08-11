@@ -49,6 +49,16 @@ export const RESUME_DATA = {
       de: "Zwischen hellem und dunklem Modus wechseln",
     },
   },
+  // Feeds schema.org/Person `knowsAbout`. Kept next to the rest of the content
+  // so the structured data cannot drift away from what the page claims.
+  knowsAbout: [
+    "SEPA",
+    "EBICS",
+    { en: "Payment Systems", de: "Zahlungsverkehrssysteme" },
+    { en: "Corporate Banking", de: "Firmenkundengeschäft" },
+    "Java",
+    { en: "Product Ownership", de: "Product Ownership" },
+  ],
   // Served from /public so the CV does not depend on GitHub being reachable
   // at render time. Replace the file to change the picture.
   avatarUrl: "/avatar.jpg",

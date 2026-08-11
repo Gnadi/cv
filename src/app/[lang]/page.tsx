@@ -105,9 +105,16 @@ export default async function Page({
           <h2 className="text-xl font-bold print:text-[15px]">
             {t(RESUME_DATA.sections.about)}
           </h2>
-          <p className="whitespace-pre-line text-pretty font-mono text-sm text-muted-foreground print:text-[10px] print:leading-snug">
-            {t(RESUME_DATA.summary)}
-          </p>
+          {/* Split into real paragraphs rather than a pre-line block: the blank
+              line a "\n\n" renders costs a full line of paper, and German runs
+              longer than English to begin with. */}
+          <div className="space-y-2 text-pretty font-mono text-sm text-muted-foreground print:space-y-1 print:text-[9px] print:leading-tight">
+            {t(RESUME_DATA.summary)
+              .split("\n\n")
+              .map((paragraph) => (
+                <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+              ))}
+          </div>
         </Section>
         <Section>
           <h2 className="text-xl font-bold print:text-[15px]">
@@ -154,7 +161,7 @@ export default async function Page({
                     {t(work.title)}
                   </h4>
                 </CardHeader>
-                <CardContent className="mt-2 text-sm print:mt-0.5 print:text-[10px] print:leading-snug">
+                <CardContent className="mt-2 text-sm print:mt-0.5 print:text-[10px] print:leading-tight">
                   <p className="text-pretty">{t(work.intro)}</p>
                   {/* Two work cards with bullets cost more paper than the old
                       single block, so print gets its own tighter metrics. */}
@@ -201,25 +208,6 @@ export default async function Page({
           </div>
         </Section>
 
-        <Section className="scroll-mb-16">
-          <h2 className="text-xl font-bold print:text-[15px]">
-            {t(RESUME_DATA.sections.projects)}
-          </h2>
-          <div className="print-projects-grid -mx-3 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 print:grid-cols-3 print:gap-2">
-            {RESUME_DATA.projects.map((project) => {
-              return (
-                <ProjectCard
-                  key={project.title}
-                  title={project.title}
-                  description={t(project.description)}
-                  tags={project.techStack}
-                  link={"link" in project ? project.link.href : undefined}
-                />
-              );
-            })}
-          </div>
-        </Section>
-
         <Section>
           <h2 className="text-xl font-bold print:text-[15px]">
             {t(RESUME_DATA.sections.education)}
@@ -245,12 +233,31 @@ export default async function Page({
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="mt-2 print:mt-1 print:text-[10px]">
+                <CardContent className="mt-2 print:mt-0.5 print:text-[9px]">
                   {t(education.degree)}
                 </CardContent>
               </Card>
             );
           })}
+        </Section>
+
+        <Section className="scroll-mb-16">
+          <h2 className="text-xl font-bold print:text-[15px]">
+            {t(RESUME_DATA.sections.projects)}
+          </h2>
+          <div className="print-projects-grid -mx-3 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 print:grid-cols-3 print:gap-2">
+            {RESUME_DATA.projects.map((project) => {
+              return (
+                <ProjectCard
+                  key={project.title}
+                  title={project.title}
+                  description={t(project.description)}
+                  tags={project.techStack}
+                  link={"link" in project ? project.link.href : undefined}
+                />
+              );
+            })}
+          </div>
         </Section>
       </section>
 

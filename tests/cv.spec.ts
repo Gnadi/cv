@@ -80,6 +80,52 @@ test.describe("positioning", () => {
   });
 });
 
+test.describe("structured data", () => {
+  const SAME_AS = [
+    "https://www.gnadlinger.me",
+    "https://blog.gnadlinger.me",
+    "https://github.com/Gnadi",
+    "https://www.linkedin.com/in/johannes-gnadlinger-842293271",
+    "https://stackoverflow.com/users/6504152/johannes-gnadlinger",
+  ];
+
+  for (const lang of ["en", "de"]) {
+    test(`/${lang} ships valid schema.org/Person in the static HTML`, async ({
+      request,
+    }) => {
+      const html = await (await request.get(`/${lang}`)).text();
+      const match = html.match(
+        /<script type="application\/ld\+json">(.*?)<\/script>/s,
+      );
+      expect(match, "no JSON-LD block in the prerendered HTML").not.toBeNull();
+
+      const person = JSON.parse(match![1]);
+      expect(person["@type"]).toBe("Person");
+      expect(person.name).toBe("Johannes Gnadlinger");
+      expect(person.jobTitle).toBe("Payments & Backend Engineer");
+      expect(person.worksFor.name).toBe("Raiffeisen Software GmbH");
+      expect(person.address.addressLocality).toBe("Linz");
+      expect(person.address.addressCountry).toBe("AT");
+      expect(person.image).toMatch(/^https?:\/\/.+\/avatar\.jpg$/);
+      // The identity graph has to stay byte-identical across every property,
+      // so this asserts the exact set rather than "contains".
+      expect([...person.sameAs].sort()).toEqual([...SAME_AS].sort());
+    });
+  }
+
+  test("the page title carries the canonical positioning", async ({ page }) => {
+    await page.goto("/en");
+    await expect(page).toHaveTitle(
+      "Johannes Gnadlinger — Payments & Backend Engineer",
+    );
+
+    await page.goto("/de");
+    await expect(page).toHaveTitle(
+      "Johannes Gnadlinger — Payments & Backend Engineer",
+    );
+  });
+});
+
 test.describe("accessibility", () => {
   test("each social link has its own accessible name", async ({ page }) => {
     await page.goto("/en");
@@ -125,20 +171,27 @@ test.describe("print output", () => {
     await expect(page.getByText("myfaos.app", { exact: true })).toBeVisible();
   });
 
-  test("the printed CV fits on one A4 page", async ({ page }) => {
-    // A4 at 96dpi, so the print layout is measured at the width it prints at.
-    await page.setViewportSize({ width: 794, height: 1123 });
-    await page.goto("/en");
-    await page.emulateMedia({ media: "print" });
-    // A4 at 96dpi minus the 1.2cm page margins declared in globals.css.
-    // Measured on <body>: documentElement.scrollHeight never reports less
-    // than the viewport, which would mask a CV that already fits.
-    const printableHeight = 1123 - 2 * 45;
-    const height = await page.evaluate(() =>
-      Math.ceil(document.body.getBoundingClientRect().height),
-    );
-    expect(height).toBeLessThanOrEqual(printableHeight);
-  });
+  // Both languages, because German runs materially longer than English: the
+  // German CV silently spilled onto a second page while this test, which only
+  // ever loaded /en, stayed green.
+  for (const lang of ["en", "de"]) {
+    test(`the printed ${lang.toUpperCase()} CV fits on one A4 page`, async ({
+      page,
+    }) => {
+      // A4 at 96dpi, so the print layout is measured at the width it prints at.
+      await page.setViewportSize({ width: 794, height: 1123 });
+      await page.goto(`/${lang}`);
+      await page.emulateMedia({ media: "print" });
+      // A4 at 96dpi minus the 1.2cm page margins declared in globals.css.
+      // Measured on <body>: documentElement.scrollHeight never reports less
+      // than the viewport, which would mask a CV that already fits.
+      const printableHeight = 1123 - 2 * 45;
+      const height = await page.evaluate(() =>
+        Math.ceil(document.body.getBoundingClientRect().height),
+      );
+      expect(height).toBeLessThanOrEqual(printableHeight);
+    });
+  }
 
   test("print stays light even in dark mode", async ({ page }) => {
     await page.goto("/en");
