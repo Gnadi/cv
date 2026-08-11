@@ -23,7 +23,9 @@ export default async function Page({
   const t = createTranslator(lang);
 
   return (
-    <main className="container relative mx-auto scroll-my-12 overflow-auto p-4 md:p-16 print:p-0">
+    // Extra bottom padding below xl: that is where the floating command-menu
+    // button sits, and on a phone it lands on top of the last project card.
+    <main className="container relative mx-auto scroll-my-12 overflow-auto p-4 pb-28 md:p-16 md:pb-28 xl:pb-16 print:p-0">
       <section className="mx-auto w-full max-w-2xl space-y-8 print:space-y-1.5">
         <div className="flex items-center justify-between">
           <div className="flex-1 space-y-1.5">
