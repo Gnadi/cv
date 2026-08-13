@@ -43,6 +43,31 @@ export const CommandMenu = () => {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  // `window.print()` blocks the main thread, so calling it right after
+  // `setOpen(false)` prints the page while the dialog is still up: React has
+  // not committed the close yet, and the dialog's scroll lock still holds
+  // `overflow: hidden` plus a scrollbar-width margin on <body>. Chrome carries
+  // that into the printout as a scrollbar, which Ctrl+P never shows. So wait
+  // for the lock to be released — the dialog keeps it through its exit
+  // animation, ~300ms — and print the same page Ctrl+P would.
+  const printWhenClosed = () => {
+    const deadline = performance.now() + 1000;
+    const tick = () => {
+      // Set by react-remove-scroll (via Radix) for exactly as long as the lock
+      // is applied. The print stylesheet neutralises the lock as well, so a
+      // renamed attribute costs nothing worse than printing a touch early.
+      if (
+        document.body.hasAttribute("data-scroll-locked") &&
+        performance.now() < deadline
+      ) {
+        requestAnimationFrame(tick);
+        return;
+      }
+      window.print();
+    };
+    requestAnimationFrame(tick);
+  };
+
   // On open the dialog focuses its first tabbable child, which is the search
   // input. On touch devices that raises the virtual keyboard and buries the
   // options, so focus the dialog itself instead — the input is one tap away
@@ -84,7 +109,7 @@ export const CommandMenu = () => {
               aria-label="Print CV or save it as PDF"
               onSelect={() => {
                 setOpen(false);
-                window.print();
+                printWhenClosed();
               }}
             >
               <Printer />

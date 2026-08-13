@@ -99,6 +99,22 @@
     --border: 220 13% 91%;
   }
 
+  /* An open dialog locks scrolling by putting `overflow: hidden`, a
+     `position: relative` and a scrollbar-width `margin-right` on <body>
+     (react-remove-scroll, via Radix). Printing under that lock draws a
+     scrollbar onto the page and shifts the CV off-centre by the scrollbar
+     width. The command menu waits the lock out before printing; this covers
+     the rest, e.g. Ctrl+P pressed while the menu is open. `html body` outranks
+     the runtime-injected `body[data-scroll-locked]` rule, which is `!important`
+     itself and lands later in the cascade. */
+  html body[data-scroll-locked] {
+    overflow: visible !important;
+    position: static !important;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+    overscroll-behavior: auto !important;
+  }
+
   /* Compaction for paper lives in `print:` utilities on the components.
      Element selectors lose to Tailwind's utility classes on specificity, so
      they silently do nothing here. */
