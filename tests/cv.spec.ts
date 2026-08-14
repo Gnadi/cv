@@ -215,4 +215,48 @@ test.describe("theme", () => {
     await page.reload();
     await expect(page.locator("html")).toHaveClass(/dark/);
   });
+
+  // The portfolio and the blog are separate deployments on the same domain and
+  // read the choice from a cookie, so switching sites keeps the theme.
+  test("the choice is handed on through the shared cookie", async ({
+    page,
+    context,
+  }) => {
+    await page.goto("/en");
+    await page.getByRole("button", { name: /dark mode/i }).click();
+    await expect(page.locator("html")).toHaveClass(/dark/);
+
+    const cookie = (await context.cookies()).find((c) => c.name === "theme");
+    expect(cookie?.value).toBe("dark");
+  });
+
+  test("a theme picked on a sibling site wins over the local copy", async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    await page.goto("/en");
+    await page.evaluate(() => localStorage.setItem("cv-theme", "light"));
+    await context.addCookies([{ name: "theme", value: "dark", url: baseURL! }]);
+
+    await page.reload();
+    await expect(page.locator("html")).toHaveClass(/dark/);
+    // …and the per-site copy is brought in line rather than left to fight it.
+    expect(await page.evaluate(() => localStorage.getItem("cv-theme"))).toBe(
+      "dark",
+    );
+  });
+
+  test("with nothing chosen, the system preference stays in charge", async ({
+    page,
+    context,
+  }) => {
+    await page.emulateMedia({ colorScheme: "dark" });
+    await page.goto("/en");
+    await expect(page.locator("html")).toHaveClass(/dark/);
+    // Nothing was persisted, so a later change of the system setting still wins.
+    expect((await context.cookies()).find((c) => c.name === "theme")).toBe(
+      undefined,
+    );
+  });
 });

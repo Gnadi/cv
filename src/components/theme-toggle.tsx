@@ -4,24 +4,25 @@ import { useCallback, useEffect, useSyncExternalStore } from "react";
 import { MoonIcon, SunIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  THEME_STORAGE_KEY,
-  applyTheme,
-  readTheme,
-  type Theme,
-} from "@/lib/theme";
+import { applyTheme, readTheme, storeTheme, type Theme } from "@/lib/theme";
 
-// localStorage is an external store, so the theme is read through
-// useSyncExternalStore: the server snapshot keeps hydration consistent and the
-// subscription picks up changes made in other tabs.
+// The theme lives in browser storage rather than in React, so it is read
+// through useSyncExternalStore: the server snapshot keeps hydration
+// consistent and the subscription picks up changes made in other tabs — both
+// on this site (storage events) and on the portfolio or the blog, which share
+// the theme through a cookie and are usually open in a tab of their own.
 const listeners = new Set<() => void>();
 
 function subscribe(onStoreChange: () => void) {
   listeners.add(onStoreChange);
   window.addEventListener("storage", onStoreChange);
+  window.addEventListener("focus", onStoreChange);
+  document.addEventListener("visibilitychange", onStoreChange);
   return () => {
     listeners.delete(onStoreChange);
     window.removeEventListener("storage", onStoreChange);
+    window.removeEventListener("focus", onStoreChange);
+    document.removeEventListener("visibilitychange", onStoreChange);
   };
 }
 
@@ -38,7 +39,7 @@ export function ThemeToggle({ label }: { label: string }) {
 
   const toggle = useCallback(() => {
     const next: Theme = readTheme() === "dark" ? "light" : "dark";
-    window.localStorage.setItem(THEME_STORAGE_KEY, next);
+    storeTheme(next);
     listeners.forEach((listener) => listener());
   }, []);
 
