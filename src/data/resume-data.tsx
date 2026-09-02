@@ -3,6 +3,8 @@ import { GitHubIcon, LinkedInIcon } from "@/components/icons";
 import { WebsiteIcon } from "@/components/icons/WebsiteIcon";
 import { Rss } from "lucide-react";
 
+import { EMPLOYER_URL } from "@/lib/entity";
+
 export const RESUME_DATA = {
   name: "Ing. Johannes Gnadlinger",
   initials: "JG",
@@ -79,12 +81,15 @@ export const RESUME_DATA = {
       },
       {
         name: "Website",
-        url: "https://www.gnadlinger.me",
+        // Trailing slash: this is an origin, and the portfolio publishes it
+        // this way in its own sameAs. The entries have to match character for
+        // character to reconcile as one profile.
+        url: "https://www.gnadlinger.me/",
         icon: WebsiteIcon,
       },
       {
         name: "Blog",
-        url: "https://blog.gnadlinger.me",
+        url: "https://blog.gnadlinger.me/",
         icon: Rss,
       },
     ],
@@ -120,7 +125,7 @@ export const RESUME_DATA = {
   work: [
     {
       company: "Raiffeisen Software GmbH",
-      link: "https://r-software.at",
+      link: EMPLOYER_URL,
       badges: ["Linz"],
       title: {
         en: "Payments & Backend Engineer",
@@ -161,7 +166,7 @@ export const RESUME_DATA = {
     },
     {
       company: "Raiffeisen Software GmbH",
-      link: "https://r-software.at",
+      link: EMPLOYER_URL,
       badges: ["Linz"],
       title: {
         en: "Full Stack Developer & Product Owner",
