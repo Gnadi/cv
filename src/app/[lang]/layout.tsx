@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import { notFound } from "next/navigation";
-
 import "../globals.css";
 import React from "react";
 import { ThemeScript } from "@/components/theme-script";
 import { PersonJsonLd } from "@/components/person-json-ld";
 import { RESUME_DATA } from "@/data/resume-data";
-import { LANGUAGES, isLanguage, type Language } from "@/lib/i18n";
+import {
+  DEFAULT_LANGUAGE,
+  LANGUAGES,
+  isLanguage,
+  type Language,
+} from "@/lib/i18n";
 import { siteUrl } from "@/lib/site";
 
 // Built from the canonical role in RESUME_DATA rather than restated, so the
@@ -57,8 +61,13 @@ export async function generateMetadata({
     alternates: {
       canonical: `/${lang}`,
       // Makes the German CV a shareable, indexable URL rather than a
-      // client-side toggle search engines never see.
-      languages: Object.fromEntries(LANGUAGES.map((l) => [l, `/${l}`])),
+      // client-side toggle search engines never see. x-default names the
+      // fallback for visitors outside both language regions — without it the
+      // pair is ambiguous, and / redirects here anyway.
+      languages: {
+        ...Object.fromEntries(LANGUAGES.map((l) => [l, `/${l}`])),
+        "x-default": `/${DEFAULT_LANGUAGE}`,
+      },
     },
     openGraph: {
       title,
