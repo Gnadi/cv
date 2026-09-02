@@ -1,7 +1,8 @@
-import { ConsultlyLogo, ParabolLogo } from "@/images/logos";
 import { GitHubIcon, LinkedInIcon } from "@/components/icons";
 import { WebsiteIcon } from "@/components/icons/WebsiteIcon";
 import { Rss } from "lucide-react";
+
+import { EMPLOYER_URL } from "@/lib/entity";
 
 export const RESUME_DATA = {
   name: "Ing. Johannes Gnadlinger",
@@ -79,12 +80,15 @@ export const RESUME_DATA = {
       },
       {
         name: "Website",
-        url: "https://www.gnadlinger.me",
+        // Trailing slash: this is an origin, and the portfolio publishes it
+        // this way in its own sameAs. The entries have to match character for
+        // character to reconcile as one profile.
+        url: "https://www.gnadlinger.me/",
         icon: WebsiteIcon,
       },
       {
         name: "Blog",
-        url: "https://blog.gnadlinger.me",
+        url: "https://blog.gnadlinger.me/",
         icon: Rss,
       },
     ],
@@ -120,13 +124,12 @@ export const RESUME_DATA = {
   work: [
     {
       company: "Raiffeisen Software GmbH",
-      link: "https://r-software.at",
+      link: EMPLOYER_URL,
       badges: ["Linz"],
       title: {
         en: "Payments & Backend Engineer",
         de: "Payments & Backend Engineer",
       },
-      logo: ParabolLogo,
       start: "2023",
       end: {
         en: "Present",
@@ -161,13 +164,12 @@ export const RESUME_DATA = {
     },
     {
       company: "Raiffeisen Software GmbH",
-      link: "https://r-software.at",
+      link: EMPLOYER_URL,
       badges: ["Linz"],
       title: {
         en: "Full Stack Developer & Product Owner",
         de: "Full Stack Developer & Product Owner",
       },
-      logo: ParabolLogo,
       start: "2018",
       end: "2022",
       intro: {
@@ -261,7 +263,6 @@ export const RESUME_DATA = {
         en: "Conceived, built and shipped a private social platform end to end — from product concept to a running service.",
         de: "Eine private Social-Media-Plattform, eigenständig konzipiert, entwickelt und veröffentlicht — von der Produktidee bis zum laufenden Dienst.",
       },
-      logo: ConsultlyLogo,
       link: {
         label: "kaydo.app",
         href: "https://kaydo.app",
@@ -274,7 +275,6 @@ export const RESUME_DATA = {
         en: "Designed and shipped a mobile-first family organizer with a shared calendar, tasks and child documentation.",
         de: "Mobile-first Familienorganizer mit geteiltem Kalender, Aufgaben und Kinddokumentation — entworfen und veröffentlicht.",
       },
-      logo: ConsultlyLogo,
       link: {
         label: "myfaos.app",
         href: "https://myfaos.app",
@@ -287,7 +287,6 @@ export const RESUME_DATA = {
         en: "Built and maintain a polling platform supporting several poll types, including location-based and live polls.",
         de: "Abstimmungsplattform mit mehreren Umfragetypen, darunter standortbasierte und Live-Abstimmungen — entwickelt und betrieben.",
       },
-      logo: ConsultlyLogo,
       link: {
         label: "flexpoll.app",
         href: "https://flexpoll.app",

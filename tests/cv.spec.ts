@@ -82,12 +82,18 @@ test.describe("positioning", () => {
 
 test.describe("structured data", () => {
   const SAME_AS = [
-    "https://www.gnadlinger.me",
-    "https://blog.gnadlinger.me",
+    "https://www.gnadlinger.me/",
+    "https://blog.gnadlinger.me/",
     "https://github.com/Gnadi",
     "https://www.linkedin.com/in/johannes-gnadlinger-842293271",
     "https://stackoverflow.com/users/6504152/johannes-gnadlinger",
   ];
+
+  // The anchors the portfolio and the blog publish their own nodes under.
+  // If these drift, the three hosts stop describing one person — which is the
+  // whole reason this page carries structured data at all.
+  const PERSON_ID = "https://www.gnadlinger.me/#person";
+  const EMPLOYER_ID = "https://www.gnadlinger.me/#raiffeisen-software";
 
   for (const lang of ["en", "de"]) {
     test(`/${lang} ships valid schema.org/Person in the static HTML`, async ({
@@ -99,11 +105,36 @@ test.describe("structured data", () => {
       );
       expect(match, "no JSON-LD block in the prerendered HTML").not.toBeNull();
 
-      const person = JSON.parse(match![1]);
+      const graph = JSON.parse(match![1]);
+      const nodes = graph["@graph"];
+      expect(Array.isArray(nodes), "JSON-LD is not a @graph").toBe(true);
+
+      const person = nodes.find(
+        (node: { "@type": string }) => node["@type"] === "Person",
+      );
+      const employer = nodes.find(
+        (node: { "@type": string }) => node["@type"] === "Organization",
+      );
+      const profilePage = nodes.find(
+        (node: { "@type": string }) => node["@type"] === "ProfilePage",
+      );
+
+      // The shared anchors are the point of the graph, so they are asserted
+      // before anything else.
+      expect(person["@id"]).toBe(PERSON_ID);
+      expect(employer["@id"]).toBe(EMPLOYER_ID);
+      expect(person.worksFor["@id"]).toBe(EMPLOYER_ID);
+      expect(profilePage.mainEntity["@id"]).toBe(PERSON_ID);
+      // The entity's home is the portfolio; this page is only a description
+      // of it, carried by the ProfilePage node.
+      expect(person.url).toBe("https://www.gnadlinger.me/");
+      expect(profilePage.url).toMatch(new RegExp(`^https?://.+/${lang}$`));
+
       expect(person["@type"]).toBe("Person");
       expect(person.name).toBe("Johannes Gnadlinger");
       expect(person.jobTitle).toBe("Payments & Backend Engineer");
-      expect(person.worksFor.name).toBe("Raiffeisen Software GmbH");
+      expect(employer.name).toBe("Raiffeisen Software GmbH");
+      expect(employer.url).toBe("https://r-software.at");
       expect(person.address.addressLocality).toBe("Linz");
       expect(person.address.addressCountry).toBe("AT");
       expect(person.image).toMatch(/^https?:\/\/.+\/avatar\.jpg$/);
