@@ -39,7 +39,7 @@ export default defineConfig({
   ],
   webServer: {
     command: `npm run build && npx next start -p ${PORT}`,
-    url: `http://127.0.0.1:${PORT}/en`,
+    url: `http://127.0.0.1:${PORT}/`,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
   },

@@ -11,6 +11,7 @@ import {
   DEFAULT_LANGUAGE,
   LANGUAGES,
   isLanguage,
+  pathFor,
   type Language,
 } from "@/lib/i18n";
 import { siteUrl } from "@/lib/site";
@@ -59,14 +60,14 @@ export async function generateMetadata({
     title,
     description,
     alternates: {
-      canonical: `/${lang}`,
+      canonical: pathFor(lang),
       // Makes the German CV a shareable, indexable URL rather than a
       // client-side toggle search engines never see. x-default names the
       // fallback for visitors outside both language regions — without it the
-      // pair is ambiguous, and / redirects here anyway.
+      // pair is ambiguous.
       languages: {
-        ...Object.fromEntries(LANGUAGES.map((l) => [l, `/${l}`])),
-        "x-default": `/${DEFAULT_LANGUAGE}`,
+        ...Object.fromEntries(LANGUAGES.map((l) => [l, pathFor(l)])),
+        "x-default": pathFor(DEFAULT_LANGUAGE),
       },
     },
     openGraph: {
@@ -76,7 +77,7 @@ export async function generateMetadata({
       firstName: "Johannes",
       lastName: "Gnadlinger",
       locale: lang === "de" ? "de_AT" : "en_US",
-      url: `/${lang}`,
+      url: pathFor(lang),
     },
     twitter: {
       card: "summary_large_image",

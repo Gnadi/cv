@@ -9,7 +9,7 @@ test.describe("command menu", () => {
     page,
   }) => {
     test.skip(onTouch(), "covered by the touch case below");
-    await page.goto("/en");
+    await page.goto("/");
     await page.keyboard.press("Control+j");
 
     await expect(page.getByRole("dialog")).toBeVisible();
@@ -20,7 +20,7 @@ test.describe("command menu", () => {
     page,
   }) => {
     test.skip(!onTouch(), "needs a coarse pointer");
-    await page.goto("/en");
+    await page.goto("/");
     await page.getByRole("button", { name: "open command menu" }).tap();
 
     // Focus lands on the dialog, not the input: a focused input raises the
@@ -54,7 +54,7 @@ test.describe("command menu", () => {
         };
       };
     });
-    await page.goto("/en");
+    await page.goto("/");
     await page.keyboard.press("Control+j");
     await page.getByText("Print / Save as PDF").click();
 
@@ -72,7 +72,7 @@ test.describe("print output with the menu open", () => {
   // The safety net for everything that does not go through the menu's own
   // deferral -- Ctrl+P while the menu is open lands here.
   test("a locked body prints without scrollbar or offset", async ({ page }) => {
-    await page.goto("/en");
+    await page.goto("/");
     await page.keyboard.press("Control+j");
     await expect(page.getByRole("dialog")).toBeVisible();
     await expect(page.locator("body")).toHaveAttribute("data-scroll-locked");

@@ -19,7 +19,7 @@ for (const lang of ["en", "de"]) {
 }
 
 test("dark mode has no accessibility violations", async ({ page }) => {
-  await page.goto("/en");
+  await page.goto("/");
   await page.getByRole("button", { name: /dark mode/i }).click();
   await expect(page.locator("html")).toHaveClass(/dark/);
 
@@ -30,7 +30,7 @@ test("dark mode has no accessibility violations", async ({ page }) => {
 });
 
 test("the command menu has no accessibility violations", async ({ page }) => {
-  await page.goto("/en");
+  await page.goto("/");
   // The floating button is xl:hidden, and this viewport is xl — at this width
   // the shortcut is the only way in, which is what the hint bar advertises.
   await page.keyboard.press("ControlOrMeta+j");

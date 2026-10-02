@@ -1,6 +1,11 @@
 import { RESUME_DATA } from "@/data/resume-data";
 import { EMPLOYER_ID, EMPLOYER_URL, PERSON_ID, PERSON_URL } from "@/lib/entity";
-import { createTranslator, type Language, type Translated } from "@/lib/i18n";
+import {
+  createTranslator,
+  pathFor,
+  type Language,
+  type Translated,
+} from "@/lib/i18n";
 import { siteUrl } from "@/lib/site";
 
 const resolve = (t: (value: Translated) => string) => {
@@ -29,7 +34,7 @@ export function PersonJsonLd({ lang }: { lang: Language }) {
   const t = createTranslator(lang);
   const text = resolve(t);
 
-  const pageUrl = `${siteUrl}/${lang}`;
+  const pageUrl = new URL(pathFor(lang), siteUrl).href;
 
   // The school entries carry both a formal qualification and a school; the
   // Ing. qualification is a credential, the rest is where he studied.

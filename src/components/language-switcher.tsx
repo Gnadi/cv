@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { LANGUAGE_LABELS, type Language } from "@/lib/i18n";
+import { LANGUAGE_LABELS, pathFor, type Language } from "@/lib/i18n";
 
 /**
  * A real link rather than a state toggle, so each language has a shareable,
@@ -18,7 +18,7 @@ export function LanguageSwitcher({ current }: { current: Language }) {
       asChild
     >
       <Link
-        href={`/${other}`}
+        href={pathFor(other)}
         hrefLang={other}
         aria-label={`Switch to ${LANGUAGE_LABELS[other]}`}
       >

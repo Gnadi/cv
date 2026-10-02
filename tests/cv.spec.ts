@@ -1,15 +1,35 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("language routing", () => {
-  test("/ redirects to the default language", async ({ page }) => {
-    await page.goto("/");
-    await expect(page).toHaveURL(/\/en$/);
+  test("/ serves the English CV itself, without a redirect", async ({
+    request,
+  }) => {
+    const response = await request.get("/", { maxRedirects: 0 });
+    expect(response.status()).toBe(200);
+    const html = await response.text();
+    expect(html).toContain('lang="en"');
+    expect(html).toContain("Professional Experience");
+  });
+
+  test("/en permanently redirects to /", async ({ request }) => {
+    const response = await request.get("/en", { maxRedirects: 0 });
+    expect(response.status()).toBe(308);
+    expect(response.headers()["location"]).toBe("/");
+  });
+
+  test("a German Accept-Language still lands on /de", async ({ request }) => {
+    const response = await request.get("/", {
+      maxRedirects: 0,
+      headers: { "accept-language": "de-AT,de;q=0.9,en;q=0.8" },
+    });
+    expect(response.status()).toBe(307);
+    expect(response.headers()["location"]).toBe("/de");
   });
 
   test("each language is server-rendered under its own URL", async ({
     page,
   }) => {
-    await page.goto("/en");
+    await page.goto("/");
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await expect(
       page.getByRole("heading", { name: "Professional Experience" }),
@@ -31,11 +51,11 @@ test.describe("language routing", () => {
   });
 
   test("the switcher is a link between the two languages", async ({ page }) => {
-    await page.goto("/en");
+    await page.goto("/");
     await page.getByRole("link", { name: /Deutsch/i }).click();
     await expect(page).toHaveURL(/\/de$/);
     await page.getByRole("link", { name: /English/i }).click();
-    await expect(page).toHaveURL(/\/en$/);
+    await expect(page).toHaveURL(/\/$/);
   });
 
   test("an unknown language 404s", async ({ request }) => {
@@ -50,7 +70,7 @@ test.describe("positioning", () => {
   test("the career phases are shown as two distinct roles", async ({
     page,
   }) => {
-    await page.goto("/en");
+    await page.goto("/");
 
     await expect(
       page.getByRole("heading", { name: "Payments & Backend Engineer" }),
@@ -68,7 +88,7 @@ test.describe("positioning", () => {
   test("the headline states the positioning in both languages", async ({
     page,
   }) => {
-    await page.goto("/en");
+    await page.goto("/");
     await expect(
       page.getByText("Building reliable financial infrastructure"),
     ).toBeVisible();
@@ -128,7 +148,9 @@ test.describe("structured data", () => {
       // The entity's home is the portfolio; this page is only a description
       // of it, carried by the ProfilePage node.
       expect(person.url).toBe("https://www.gnadlinger.me/");
-      expect(profilePage.url).toMatch(new RegExp(`^https?://.+/${lang}$`));
+      expect(profilePage.url).toMatch(
+        new RegExp(lang === "en" ? "^https?://[^/]+/$" : "^https?://.+/de$"),
+      );
 
       expect(person["@type"]).toBe("Person");
       expect(person.name).toBe("Johannes Gnadlinger");
@@ -145,7 +167,7 @@ test.describe("structured data", () => {
   }
 
   test("the page title carries the canonical positioning", async ({ page }) => {
-    await page.goto("/en");
+    await page.goto("/");
     await expect(page).toHaveTitle(
       "Johannes Gnadlinger — Payments & Backend Engineer",
     );
@@ -159,7 +181,7 @@ test.describe("structured data", () => {
 
 test.describe("accessibility", () => {
   test("each social link has its own accessible name", async ({ page }) => {
-    await page.goto("/en");
+    await page.goto("/");
     const names = await page
       .locator("header, main")
       .first()
@@ -175,7 +197,7 @@ test.describe("accessibility", () => {
   test("every new-tab link is safe against reverse tabnabbing", async ({
     page,
   }) => {
-    await page.goto("/en");
+    await page.goto("/");
     const unsafe = await page
       .locator('a[target="_blank"]')
       .evaluateAll((els) =>
@@ -187,7 +209,7 @@ test.describe("accessibility", () => {
 
 test.describe("print output", () => {
   test("projects appear in the printed CV", async ({ page }) => {
-    await page.goto("/en");
+    await page.goto("/");
     await page.emulateMedia({ media: "print" });
 
     await expect(
@@ -225,7 +247,7 @@ test.describe("print output", () => {
   }
 
   test("print stays light even in dark mode", async ({ page }) => {
-    await page.goto("/en");
+    await page.goto("/");
     await page.getByRole("button", { name: /dark mode/i }).click();
     await expect(page.locator("html")).toHaveClass(/dark/);
 
@@ -239,7 +261,7 @@ test.describe("print output", () => {
 
 test.describe("theme", () => {
   test("the choice survives a reload", async ({ page }) => {
-    await page.goto("/en");
+    await page.goto("/");
     await page.getByRole("button", { name: /dark mode/i }).click();
     await expect(page.locator("html")).toHaveClass(/dark/);
 
@@ -253,7 +275,7 @@ test.describe("theme", () => {
     page,
     context,
   }) => {
-    await page.goto("/en");
+    await page.goto("/");
     await page.getByRole("button", { name: /dark mode/i }).click();
     await expect(page.locator("html")).toHaveClass(/dark/);
 
@@ -266,7 +288,7 @@ test.describe("theme", () => {
     context,
     baseURL,
   }) => {
-    await page.goto("/en");
+    await page.goto("/");
     await page.evaluate(() => localStorage.setItem("cv-theme", "light"));
     await context.addCookies([{ name: "theme", value: "dark", url: baseURL! }]);
 
@@ -283,7 +305,7 @@ test.describe("theme", () => {
     context,
   }) => {
     await page.emulateMedia({ colorScheme: "dark" });
-    await page.goto("/en");
+    await page.goto("/");
     await expect(page.locator("html")).toHaveClass(/dark/);
     // Nothing was persisted, so a later change of the system setting still wins.
     expect((await context.cookies()).find((c) => c.name === "theme")).toBe(
