@@ -9,6 +9,15 @@ export interface Translated {
   de: string;
 }
 
+/**
+ * The public path of each language. The default language lives at the root:
+ * "/" is the URL people share and link to, so it has to be the indexable page
+ * itself rather than a redirect Google reports as "Page with redirect".
+ */
+export function pathFor(language: Language): string {
+  return language === DEFAULT_LANGUAGE ? "/" : `/${language}`;
+}
+
 export function isLanguage(value: string): value is Language {
   return (LANGUAGES as readonly string[]).includes(value);
 }
